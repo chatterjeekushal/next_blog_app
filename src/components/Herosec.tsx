@@ -1,26 +1,28 @@
-import React from 'react';
+
+'use client';
+
+import React,{useEffect,useRef} from 'react';
 import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
 import { TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
+import Typed from 'typed.js';
+
 function HeroSection() {
 
-  const words = [
-    {
-      text: "Build",
-    },
-    {
-      text: "awesome",
-    },
-    {
-      text: "apps",
-    },
-    {
-      text: "with",
-    },
-    {
-      text: "Aceternity.",
-      className: "text-blue-500 dark:text-blue-500",
-    },
-  ];
+ 
+  // Create reference to store the DOM element containing the animation
+  const el = useRef(null);
+
+  useEffect(() => {
+    const typed = new Typed(el.current, {
+      strings: ['Coding', '&amp; Web Development','Tegnology','AI/ML'],
+      typeSpeed: 50,
+    });
+
+    return () => {
+      // Destroy Typed instance during cleanup to stop animation
+      typed.destroy();
+    };
+  },[]);
 
   return (
     <>
@@ -30,9 +32,9 @@ function HeroSection() {
       <BackgroundBeamsWithCollision>
       <div className="flex flex-col items-center justify-center w-full h-screen text-center lg:flex-row mt-10 md:mt-24 lg:mt-28">
         <div className="lg:w-1/2 lg:-mt-8 md:ml-10 px-4 flex flex-col items-center justify-center ">
-          <h1 className="text-2xl leading-snug text-gray-800 dark:text-gray-200 md:text-3xl lg:text-4xl">
+          <h1 className="text-2xl leading-snug  text-gray-800 dark:text-gray-200 md:text-3xl lg:text-4xl">
             Welcome to <span className="font-semibold">Kushal's Blog</span> for Update <br className="hidden lg:block" />
-            Blog and Learn <span className="font-semibold underline decoration-primary">Something New</span>
+            Blog and Learn <span className="font-semibold underline decoration-primary"> <span ref={el} /></span>
           </h1>
           <p className="mt-4  text-base text-gray-500 dark:text-gray-300 md:text-lg">
             Open source Tailwind UI components and templates to <br className="hidden lg:block" />
@@ -81,11 +83,11 @@ function HeroSection() {
       </div>
 
       {/* Small screens */}
-      <div className="flex lg:hidden flex-col items-center justify-center w-full h-screen text-center mt-20">
+      <div className="flex lg:hidden flex-col items-center justify-center w-full h-screen text-center mt-16">
         <div className="px-4">
-          <h1 className="text-2xl leading-snug text-gray-800 dark:text-gray-200 md:text-3xl">
-            Welcome to <span className="font-semibold">Kushal's Blog</span> for Update <br />
-            Blog and Learn <span className="font-semibold underline decoration-primary">Something New</span>
+          <h1 className="text-3xl leading-snug text-gray-800 dark:text-gray-200 md:text-3xl">
+            Welcome to <span className="font-semibold">Kushal's Blog</span> <br />
+             and Learn <span className="font-semibold underline decoration-primary"><span ref={el} /></span>
           </h1>
           <p className="mt-4 text-base text-gray-500 dark:text-gray-300 md:text-lg">
             Open source Tailwind UI components and templates to bootstrap your new apps, projects or landing sites!

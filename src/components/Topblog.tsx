@@ -18,9 +18,9 @@ const cardData = [
       "imageUrl": "https://img.freepik.com/free-photo/analysis-strategy-study-information-business-planning_53876-132197.jpg?t=st=1729497441~exp=1729501041~hmac=ad0de4f5b4eb2475163d4786785b60898d2e41e946c78da9f6cb3f0a740fa04c&w=740",
       "title": "Data Analytics",
       "description": "A comprehensive guide to data analytics, covering tools and techniques for extracting insights from data to drive decision-making.",
-      "author": "Lewis Daniel",
+      "author": "Lorie marks",
       "date": "February 23, 2024",
-      "authorImage": "https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80"
+      "authorImage": "https://img.freepik.com/free-photo/portrait-smiling-blonde-woman_23-2148316635.jpg?t=st=1729744633~exp=1729748233~hmac=b98bad1c9bee3fd75e20c1b60c1d838e8078ca742a1dca7fa4fe317de364096d&w=740"
     },
     {
       "id": 3,
@@ -36,16 +36,16 @@ const cardData = [
 
 const Card = () => {
   return (
-    <div className='flex flex-col justify-center items-center flex-wrap gap-5'>
+    <div className='flex flex-col justify-center items-center flex-wrap gap-5 '>
         
       <h2 className="text-3xl font-bold text-center mb-2 md:mt-12 bg-gray-50 dark:bg-gray-800">Explore Our Top Blogs</h2>
       <p className="text-center text-lg mb-8 dark:text-gray-300">
         Choose the plan that fits your needs best and unlock amazing features.
       </p>
 
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5  w-fit   2xl:gap-40 2xl:mr-24'>
         {cardData.map((card) => (
-          <div key={card.id} className="my-6">
+          <div key={card.id} className="my-6 2xl:w-auto">
             <a 
               href="#" 
               className="relative flex flex-col bg-white shadow-sm border border-slate-200 rounded-lg w-full md:w-96 lg:w-96 px-2 transition-transform transform hover:scale-105 hover:border-purple-600 duration-300 dark:bg-gray-800 dark:border-gray-700"

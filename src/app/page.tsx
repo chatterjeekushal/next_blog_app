@@ -3,7 +3,7 @@ import PricingPlans from "@/components/Pricing";
 import InfiniteMovingCardsDemo from "@/components/Clint";
 import Card from "@/components/Topblog";
 import DashboardSection from "@/components/Ctasec";
-import Footer from "@/components/Footer";
+
 export default function Home() {
   return (
    <div>
@@ -12,7 +12,7 @@ export default function Home() {
     <InfiniteMovingCardsDemo/>
     <Card/>
     <DashboardSection/>
-    <Footer/>
+   
    </div>
   );
 }
