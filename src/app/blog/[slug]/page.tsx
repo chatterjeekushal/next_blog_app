@@ -22,8 +22,11 @@ interface PageProps {
   };
 }
 
+// Ensure blogs have a defined structure
+const blogData: BlogPost[] = blogs;
+
 export default async function Page({ params }: PageProps) {
-  const blog = blogs.filter((blog: BlogPost) => blog.slug === params.slug);
+  const blog = blogData.filter((blog: BlogPost) => blog.slug === params.slug);
 
   if (blog.length === 0) {
     return <div>Blog not found</div>; // Handle case where blog isn't found
@@ -37,14 +40,12 @@ export default async function Page({ params }: PageProps) {
     .use(rehypeStringify)
     .use(rehypePrettyCode, {
       theme: 'one-dark-pro',
-      onVisitLine(node: any) {
+      onVisitLine(node) {
         if (node.children.length === 0) {
           node.children = [{ type: 'text', value: '\n' }];
         }
       },
-      onVisitHighlightedLine(node: any) {
-        node.properties.className.push('highlighted');
-      },
+     
     })
     .use(rehypePrettyCode, {
       transformers: [
