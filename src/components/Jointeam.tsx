@@ -1,11 +1,11 @@
 import React from 'react';
+import Image from 'next/image';
 
 const TeamSection = () => {
     const teamImages = [
         "https://pagedone.io/asset/uploads/1696238644.png",
         "https://pagedone.io/asset/uploads/1696238665.png",
         "https://pagedone.io/asset/uploads/1696238684.png",
-        
     ];
 
     return (
@@ -26,12 +26,15 @@ const TeamSection = () => {
                     <div className="w-full lg:w-1/2 lg:mt-0 md:mt-40 mt-16 max-lg:max-w-2xl">
                         <div className="grid grid-cols-1 min-[450px]:grid-cols-2 md:grid-cols-3 gap-8">
                             {teamImages.map((src, index) => (
-                                <img
-                                    key={index}
-                                    src={src}
-                                    alt="Team member"
-                                    className="w-44 h-56 rounded-2xl object-cover md:mt-20 mx-auto min-[450px]:mr-0"
-                                />
+                                <div key={index} className="flex justify-center">
+                                    <Image
+                                        src={src}
+                                        alt="Team member"
+                                        width={176} // 44px * 4 (scaling factor)
+                                        height={224} // 56px * 4 (scaling factor)
+                                        className="rounded-2xl object-cover md:mt-20"
+                                    />
+                                </div>
                             ))}
                         </div>
                     </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image'; // Import the Image component from Next.js
 
 const AboutUs = () => {
   return (
@@ -77,10 +78,13 @@ const AboutUs = () => {
           </div>
           <div className="w-full lg:justify-start justify-center items-start flex">
             <div className="sm:w-[564px] w-full sm:h-[646px] h-full sm:bg-gray-100 dark:sm:bg-gray-800 rounded-3xl sm:border border-gray-200 dark:border-gray-700 relative">
-              <img
+              <Image
                 className="sm:mt-5 sm:ml-5 w-full h-full rounded-3xl object-cover"
                 src="https://pagedone.io/asset/uploads/1717742431.png"
                 alt="About Us"
+                layout="responsive" // Optional: set layout as needed
+                width={564} // Specify width
+                height={646} // Specify height
               />
             </div>
           </div>

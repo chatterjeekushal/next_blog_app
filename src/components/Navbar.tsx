@@ -4,13 +4,14 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
     Sheet,
-    SheetClose,
     SheetContent,
     SheetDescription,
-    SheetFooter,
     SheetHeader,
     SheetTitle,
     SheetTrigger,
+    // Remove unused imports
+    // SheetClose,
+    // SheetFooter,
 } from "@/components/ui/sheet";
 
 import { Button } from "@/components/ui/button";

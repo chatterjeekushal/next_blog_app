@@ -1,16 +1,15 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { InfiniteMovingCards } from "@/components/ui/infinite-moving-cards";
+import React from "react";
+import  {InfiniteMovingCards}  from "@/components/ui/infinite-moving-cards";
 
 export default function InfiniteMovingCardsDemo() {
   return (
-    <div className="h-[40rem]  rounded-md flex flex-col antialiased bg-gray-50 dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
-
-<h2 className="text-3xl font-bold text-center  mb-4">What Our Clients Say</h2>
-    <p className="text-center text-lg mb-8">
-      Choose the plan that fits your needs best and unlock amazing features.
-    </p>
+    <div className="h-[40rem] rounded-md flex flex-col antialiased bg-gray-50 dark:bg-black dark:bg-grid-white/[0.05] items-center justify-center relative overflow-hidden">
+      <h2 className="text-3xl font-bold text-center mb-4">What Our Clients Say</h2>
+      <p className="text-center text-lg mb-8">
+        Choose the plan that fits your needs best and unlock amazing features.
+      </p>
 
       <InfiniteMovingCards
         items={testimonials}
@@ -36,7 +35,8 @@ const testimonials = [
     title: "Hamlet",
   },
   {
-    quote: "All that we see or seem is but a dream within a dream.seem is but a dream within ao take Arms against a Sea of troubles, And by opposing en rs ago—never mind how long preciselycknowledged, that a s",
+    quote:
+      "All that we see or seem is but a dream within a dream.",
     name: "Edgar Allan Poe",
     title: "A Dream Within a Dream",
   },
