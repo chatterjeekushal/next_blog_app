@@ -1,7 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import React, { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState, useCallback, } from "react";
+
 
 export const InfiniteMovingCards = ({
   items,
@@ -35,18 +36,21 @@ export const InfiniteMovingCards = ({
 
   const getSpeed = useCallback(() => {
     if (containerRef.current) {
-      const duration = speed === "fast" ? "20s" : speed === "normal" ? "40s" : "80s";
+      const duration =
+        speed === "fast" ? "20s" : speed === "normal" ? "40s" : "80s";
       containerRef.current.style.setProperty("--animation-duration", duration);
     }
   }, [speed]);
 
   const addAnimation = useCallback(() => {
-    if (containerRef.current && scrollerRef.current) {
+    if (scrollerRef.current) {
       const scrollerContent = Array.from(scrollerRef.current.children);
 
       scrollerContent.forEach((item) => {
         const duplicatedItem = item.cloneNode(true);
-        scrollerRef.current.appendChild(duplicatedItem);
+
+        scrollerRef.current?.appendChild(duplicatedItem);
+        
       });
 
       getDirection();
@@ -71,7 +75,7 @@ export const InfiniteMovingCards = ({
         ref={scrollerRef}
         className={cn(
           "flex min-w-full shrink-0 gap-4 py-4 w-max flex-nowrap",
-          start && "animate-scroll ",
+          start && "animate-scroll",
           pauseOnHover && "hover:[animation-play-state:paused]"
         )}
       >
