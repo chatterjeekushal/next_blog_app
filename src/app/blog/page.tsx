@@ -66,15 +66,15 @@ export default async function Blog() {
                         </div>
 
                         <div className="flex justify-end items-end mt-4">
-                            <CardItem
-                                translateZ={20}
-                                as="a"
-                                href={`/blog/${blog.slug}`}
-                                className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold transition-colors duration-300 hover:bg-gray-800 dark:hover:bg-gray-200"
-                            >
-                                Read More
-                            </CardItem>
-                        </div>
+    { /* Use a standard anchor tag for the link */ }
+    <a
+        href={`/blog/${blog.slug}`}
+        className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold transition-colors duration-300 hover:bg-gray-800 dark:hover:bg-gray-200"
+    >
+        Read More
+    </a>
+</div>
+
                     </CardBody>
                 </CardContainer>
             ))}
