@@ -4,17 +4,17 @@ import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
 import blogs from "@/content/blog.json";
 
 interface Blog {
-    id: string;
+    id: string | number; // Depending on how your IDs are structured
     imageupload: string;
     blogtitle: string;
     blogdescription: string;
     authorImage: string;
     author: string;
     date: string;
-    rating: number;
-    slug: string;
     blograting: number;
+    slug: string;
 }
+
 
 export default async function Blog() {
     return (
@@ -60,7 +60,7 @@ export default async function Blog() {
                         {/* Blog Rating */}
                         <div className="flex items-center mt-2">
                             {[...Array(5)].map((_, i) => (
-                                <span key={i} className={i < Math.round(blog.rating) ? "text-yellow-500" : "text-yellow-800"}>&#9733;</span>
+                                <span key={i} className={i < Math.round(blog.blograting) ? "text-yellow-500" : "text-yellow-800"}>&#9733;</span>
                             ))}
                             <span className="text-sm ml-2 text-neutral-600 dark:text-neutral-300">{blog.blograting}/5</span>
                         </div>
