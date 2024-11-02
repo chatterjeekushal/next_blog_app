@@ -20,7 +20,7 @@ export default async function Blog() {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-3 mt-10">
             {blogs.map((blog: Blog) => (
-                <CardContainer key={blog.id} className="inter-var w-80 md:w-full lg:w-full">
+                <CardContainer key={blog.id} className="inter-var w-full md:w-full lg:w-full">
                     <CardBody className="bg-gray-100 relative group dark:bg-black dark:border-white/[0.2] border border-black/[0.1] sm:w-[30rem] h-auto rounded-xl p-6 shadow-sm dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1]">
                         <CardItem translateZ="100" className="w-full mt-4">
                             <Image
