@@ -40,7 +40,7 @@ export const authOptions: NextAuthOptions = {
                         throw new Error("User not found with this username or password");
                     }
 
-                    if (!user.isverified == false) {
+                    if (user.isverified == false) {
 
                         throw new Error("Please verify your email before login");
                     }
