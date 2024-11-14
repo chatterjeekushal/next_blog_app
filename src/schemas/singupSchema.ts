@@ -24,4 +24,6 @@ export const singupSchema =z.object({
     .string()
     .email({ message: "Please enter a valid email address" })
     .email({ message: "Please enter a valid email address" }),
+
+   
 })

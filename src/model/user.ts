@@ -1,12 +1,12 @@
 
-import mongoose,{Schema, Document} from "mongoose";
+import mongoose, { Schema, Document } from "mongoose";
 
 
-export interface User extends Document{
+export interface User extends Document {
 
-    username:string;
-    email:string;
-    password:string;
+    username: string;
+    email: string;
+    password: string;
     verified: string;
     verifyexpires: Date;
     isverified: boolean;
@@ -28,7 +28,7 @@ const userSchema = new Schema<User>({
     email: {
         type: String,
         required: [true, "Email is required"],
-        match:[
+        match: [
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             "Please enter a valid email"]
     },
@@ -37,7 +37,7 @@ const userSchema = new Schema<User>({
         type: String,
         required: [true, "Password is required"],
     },
-
+    
     verified: {
         type: String,
         required: [true, "Verified is required"],
@@ -50,15 +50,15 @@ const userSchema = new Schema<User>({
 
     isverified: {
         type: Boolean,
-       default: false
+        default: false
     },
 
     isactive: {
         type: Boolean,
-       default: false
+        default: false
     },
 
-},{timestamps: true});
+}, { timestamps: true });
 
 
 const UserModel = (mongoose.models.User as mongoose.Model<User>) || mongoose.model<User>("User", userSchema);
