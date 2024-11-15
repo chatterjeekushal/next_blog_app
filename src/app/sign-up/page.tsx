@@ -27,6 +27,7 @@ import { Input } from "@/components/ui/input"
 import { set } from 'mongoose'
 import { Button } from '@/components/ui/button'
 import { log } from 'console'
+import { signIn } from 'next-auth/react'
 function page() {
 
 
@@ -253,6 +254,16 @@ return (
                 </Button>
             </form>
         </Form>
+
+        {/* GitHub Sign-In Button */}
+        <div className="mt-4">
+                <Button
+                    onClick={() => signIn('github', { redirect: false })}
+                    className="w-full py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-600"
+                >
+                    Sign in with GitHub
+                </Button>
+            </div>
 
         <div className="mt-4 text-center">
             <p className="text-gray-600 text-sm">

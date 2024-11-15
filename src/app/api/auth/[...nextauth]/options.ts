@@ -61,7 +61,7 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user, account, profile }) {
       if (account?.provider === "github") {
         await dbConnect();
-        
+
         console.log("user github", user);
 
         // Check if the user already exists by GitHub email or username
@@ -70,13 +70,13 @@ export const authOptions: NextAuthOptions = {
         if (!existingUser) {
           // Create a new user if they do not exist
           await UserModel.create({
-            username: user.name || "github_" , // GitHub username (fallback to email username if missing)
-        email: user.email, // GitHub email
-        password: "github", // Set password to empty string since GitHub OAuth doesn't use a password
-        verified: "12345", // You can set this to true by default since GitHub OAuth user is considered verified
-        verifyexpires: Date.now(), // Set verifyexpires to null if not applicable
-        isverified: true, // Set isverified to true since the user is authenticated via GitHub OAuth
-        isactive: true, // Set isactive to true since the user is authenticated via GitHub
+            username: user.name || "github_", // GitHub username (fallback to email username if missing)
+            email: user.email, // GitHub email
+            password: "github", // Set password to empty string since GitHub OAuth doesn't use a password
+            verified: "12345", // You can set this to true by default since GitHub OAuth user is considered verified
+            verifyexpires: Date.now(), // Set verifyexpires to null if not applicable
+            isverified: true, // Set isverified to true since the user is authenticated via GitHub OAuth
+            isactive: true, // Set isactive to true since the user is authenticated via GitHub
           });
         }
       }
