@@ -3,7 +3,7 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/user";
 import bcrypt from "bcryptjs";
-import { sendVerifyEmail } from "@/helpers/sendverifyemail";
+import mailSender from "@/helpers/sendverifyemail";
 import { singupSchema } from "@/schemas/singupSchema";
 
 // Handler for POST request to register a new user
@@ -67,18 +67,13 @@ export async function POST(req: Request) {
         await newUser.save();
 
         // Send the verification email
-        const emailResponse = await sendVerifyEmail(
+        const emailResponse = await mailSender(
             validData.email,
             validData.username,
             verifyCode.toString()
         );
 
-        // If the email could not be sent, return an error
-        if (!emailResponse.success) {
-            return Response.json({ message: "Failed to send verification email", success: false }),
-                { status: 500 }
-            
-        }
+       console.log("emailResponse", emailResponse);
 
         // Return a success response
         return  Response.json({ message: "User registered successfully", success: true }, { status: 200 });
