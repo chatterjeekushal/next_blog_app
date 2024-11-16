@@ -3,9 +3,10 @@ import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/theme-provider"
-import Footer from "@/components/Footer";
+
 import { Toaster } from "@/components/ui/toaster"
 import AuthProvider from "@/context/Authprovider";
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,31 +31,31 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      
+      <AuthProvider>
 
-
-<AuthProvider>
-
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
 
-          <Navbar />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
 
-          {children}
-          <Toaster />
-          <Footer/>
-        </ThemeProvider>
+            <Navbar />
+            
+            {children}
+            <Toaster />
+            
+          </ThemeProvider>
 
-      </body>
+        </body>
 
       </AuthProvider>
+
 
     </html>
   );
