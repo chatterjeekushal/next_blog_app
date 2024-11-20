@@ -42,17 +42,18 @@ const data = {
       isActive: true,
       items: [
         {
-          title: "History",
+          title: "New Blog",
           url: "#",
         },
         {
-          title: "Starred",
+          title: "Delete Blog",
           url: "#",
         },
         {
-          title: "Settings",
+          title: "All Blogs",
           url: "#",
         },
+       
       ],
     },
     {

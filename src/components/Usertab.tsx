@@ -11,7 +11,7 @@ const TabContent = () => {
   };
 
   return (
-    <div className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div className="w-full  border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <div className="sm:hidden">
         <label htmlFor="tabs" className="sr-only">Select tab</label>
         <select
@@ -39,7 +39,7 @@ const TabContent = () => {
             onClick={() => handleTabClick('about')}
             className={`inline-block w-full p-4 bg-gray-50 hover:bg-gray-100 focus:outline-none dark:bg-gray-700 dark:hover:bg-gray-600 ${activeTab === 'about' ? 'bg-gray-200' : ''}`}
           >
-            Services
+            Your Blogs
           </button>
         </li>
         <li className="w-full">
