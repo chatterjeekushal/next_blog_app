@@ -14,9 +14,12 @@ import {
 } from "@/components/ui/alert"
 
 import { Button } from "@/components/ui/button"
+import TabContent from './Usertab';
 const Dashbord = () => {
   return (
     
+    <>
+
     <div className="flex mt-10 flex-col md:flex-row  gap-4">
     
 
@@ -27,7 +30,7 @@ const Dashbord = () => {
 
     <Alert>
       <Terminal className="h-4 w-4" />
-      <AlertTitle>Hey! <span className='font-semibold'>kushal chatterjee</span></AlertTitle>
+      <AlertTitle className='text-4xl md:text-5xl'><span className='font-semibold '>kushal chatterjee</span></AlertTitle>
       <AlertDescription className='text-sm mt-5'>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem excepturi nobis, reprehenderit molestiae maxime adipisci vel impedit ullam sed veniam pariatur quas ea natus aut sit repellat 
       </AlertDescription>
@@ -36,8 +39,12 @@ const Dashbord = () => {
 
     </Alert>
 
-
   </div>
+
+
+  <TabContent />
+
+  </>
   );
 };
 
