@@ -23,6 +23,10 @@ import TabContent from './Usertab';
 import { useSession, signOut } from 'next-auth/react'
 import { User } from 'next-auth'
 
+
+import BlogtextEditor from './BlogtextEditor'
+
+
 const Dashbord = () => {
 
 
@@ -58,6 +62,8 @@ const Dashbord = () => {
 
 
   <TabContent />
+
+ 
 
   </>
   );
