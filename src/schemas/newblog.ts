@@ -20,8 +20,13 @@ export const newblogSchema =z.object({
 
     blogcontent: z
     .string()
-    
     .max(1000, { message: "Blogcontent must be less than 1000 characters" })
+    .trim(),
+
+    blogImage: z
+    .string()
+    .min(3, {message: "BlogImage must be at least 3 characters"} )
+    .max(1000000, { message: "BlogImage must be less than 100 characters" })
     .trim(),
 
     

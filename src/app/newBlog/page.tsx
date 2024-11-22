@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast"
 import { useRouter } from 'next/navigation'
 import { newblogSchema } from '@/schemas/newblog'
 import axios, { AxiosError } from 'axios'
+import { ApiResponce } from '@/types/ApiResponce'
 
 import {
     Form,
@@ -29,6 +30,7 @@ function Page() {
     const router = useRouter()
 
     const [isSubmitting, setIsSubmitting] = useState(false)
+
     const editorRef = useRef<any>(null)
 
     // zod form validation schema
@@ -37,7 +39,8 @@ function Page() {
         defaultValues: {
             blogtitle: "",
             blogdescription: "",
-            blogcontent: ""
+            blogcontent: "",
+            blogImage: "",
         }
     })
 
@@ -57,7 +60,9 @@ function Page() {
 
         try {
             // You can send data to your backend here using axios
-            // const response = await axios.post('/api/blogs', formData)
+            const response = await axios.post('/api/new-blog', formData)
+
+            console.log("response", response)
 
             // For now, logging to console:
             console.log('Form submitted with data:', formData)
@@ -68,23 +73,35 @@ function Page() {
             })
 
             // Optionally redirect after form submission
-              // Redirect to the blog list or another page
+            // Redirect to the blog list or another page
 
         } catch (error) {
-            console.error('Error submitting form:', error)
-            toast({
-                title: 'Error',
-                description: 'There was an error creating your blog. Please try again.',
-                variant: 'destructive',
-            })
+            console.log("error in singup", error);
+
+            const axiosError = error as AxiosError;
+
+            if (axiosError.response) {
+
+                const serverResponse = axiosError.response.data as ApiResponce;
+                const serverMessage = serverResponse.error?.[0] || serverResponse.message;
+
+                if (serverMessage) {
+                    toast({ title: 'error', description: serverMessage })
+                    setIsSubmitting(false) // Show the server's error message
+                } else {
+                    toast({ title: 'error', description: "user not created" })
+                    setIsSubmitting(false)
+                }
+
+            }
         } finally {
             setIsSubmitting(false)
         }
     }
 
     return (
-        <div className="flex flex-col items-center justify-center w-full h-screen bg-gray-50 py-12 px-4 sm:px-6 md:px-8 lg:px-10 md:mt-36">
-            <h1 className="text-3xl font-bold text-center text-gray-900 mb-8 mt-24">Create New Blog</h1>
+        <div className="flex flex-col items-center justify-center w-full h-screen bg-gray-50 py-12 px-4 sm:px-6 md:px-8 lg:px-10 mt-64 md:mt-96">
+            <h1 className="text-3xl font-bold text-center text-gray-900 mb-8 ">Create New Blog</h1>
 
             <div className="flex flex-col items-center justify-center w-full">
 
@@ -134,6 +151,30 @@ function Page() {
                                 </FormItem>
                             )}
                         />
+
+
+                        {/* Blog image Field */}
+                        <FormField
+                            control={form.control}
+                            name="blogImage"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="text-sm font-medium text-gray-700">Blog Image URL</FormLabel>
+                                    <FormControl>
+                                        <Input
+                                            placeholder="Enter blog image URL"
+                                            {...field}
+                                            className="mt-2 p-4 w-full border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 ease-in-out"
+                                        />
+                                    </FormControl>
+                                    <FormDescription className="text-sm text-red-400">
+                                        Plese enter your http image URL
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
 
                         {/* Blog Content Field */}
                         <FormField

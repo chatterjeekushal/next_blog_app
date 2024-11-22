@@ -47,7 +47,7 @@ const newBlogSchema = new Schema<NewBlog>({
         type: String,
         required: [true, "Slug is required"],
         trim: true,
-        unique: true
+    
     },
 
     author: {
@@ -76,6 +76,6 @@ const newBlogSchema = new Schema<NewBlog>({
 }, { timestamps: true });
 
 
-export const NewBlogModel = mongoose.model<NewBlog>("NewBlog", newBlogSchema);
+export const NewBlogModel = (mongoose.models.NewBlog as mongoose.Model<NewBlog>) || mongoose.model<NewBlog>("NewBlog", newBlogSchema);
 
 export default NewBlogModel;
