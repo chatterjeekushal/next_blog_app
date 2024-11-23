@@ -31,6 +31,8 @@ export const authOptions: NextAuthOptions = {
             ],
           });
 
+        console.log("manual user", user);
+
           if (!user) {
             throw new Error("User not found with this username or password");
           }

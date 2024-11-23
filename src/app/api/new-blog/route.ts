@@ -39,7 +39,7 @@ export async function POST(req: Request) {
         const exgistblog=await NewBlogModel.findOne({slug:slug,blogtitle:blogtitle,})
 
         if(exgistblog){
-            return Response.json({ message: "Blog already exists", success: false }, { status: 500 },);
+            return Response.json({ message: "Blog already exists This title try another title ", success: false }, { status: 500 },);
         }else{
         const newblog = new NewBlogModel({ blogid:user?._id,blogtitle:blogtitle,blogdescription: blogdescription,blogcontent:blogcontent,slug:slug,author:user?.username,authorImage:session?.user?.image||"image",blogImage:blogImage, date:new Date()});
 
