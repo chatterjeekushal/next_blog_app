@@ -1,5 +1,9 @@
-import React from 'react';
-import blogs from '@/content/blog.json';
+
+
+'use client'
+
+import React,{ useState, useEffect} from 'react';
+
 import rehypeDocument from 'rehype-document';
 import rehypeFormat from 'rehype-format';
 import rehypeStringify from 'rehype-stringify';
@@ -8,6 +12,11 @@ import remarkRehype from 'remark-rehype';
 import { unified } from 'unified';
 import rehypePrettyCode from 'rehype-pretty-code';
 import { transformerCopyButton } from '@rehype-pretty/transformers';
+import axios from 'axios';
+import { useToast } from '@/hooks/use-toast';
+
+import sanitizeHtml from 'sanitize-html';
+
 
 interface BlogPost {
   slug: string;
@@ -22,11 +31,58 @@ interface PageProps {
   };
 }
 
-// Ensure blogs have a defined structure
-const blogData: BlogPost[] = blogs;
 
-export default async function Page({ params }: PageProps) {
-  const blog = blogData.filter((blog: BlogPost) => blog.slug === params.slug);
+
+
+
+
+
+
+
+export default  function Page({ params }: PageProps) {
+
+
+  const [isShaking, setIsShaking] = useState(false);
+  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const { toast } = useToast();
+  
+  
+useEffect(() => {
+  setIsShaking(true);
+
+  // Async function to fetch blog data
+  const fetchBlogs = async () => {
+      try {
+          const response = await axios.get(`/api/all-blogs`);
+
+          setBlogs(response.data.blogs);  // Store fetched blogs in the state
+
+          console.log("response", response);
+
+          toast({
+              title: 'Success',
+              description: response.data.message,
+          });
+      } catch (error) {
+          console.error("Error fetching blogs", error);
+          toast({
+              title: 'Error',
+              description: 'Failed to fetch blogs.',
+              variant: 'destructive',
+          });
+      } finally {
+          setIsShaking(false);
+      }
+  };
+
+  fetchBlogs();
+}, []);
+
+
+
+  const blog = blogs.filter((blog: BlogPost) => blog.slug === params.slug);
+
+  console.log("my blog post with slug", blog);
 
   if (blog.length === 0) {
     return <div>Blog not found</div>; // Handle case where blog isn't found
@@ -56,7 +112,14 @@ export default async function Page({ params }: PageProps) {
       ],
     });
 
-  const htmlContent = (await prosser.process(blog[0].blogcontent)).toString();
+ 
+
+ 
+
+   const htmlContent = ( prosser.parse(blog[0].blogcontent)).toString();
+
+ 
+  
 
   return (
     <section className="bg-white w-full mt-20 min-h-screen dark:bg-gray-900">
@@ -70,6 +133,7 @@ export default async function Page({ params }: PageProps) {
             className="prose lg:prose-xl dark:prose-invert"
             dangerouslySetInnerHTML={{ __html: htmlContent }}
           />
+
         </div>
       </div>
     </section>

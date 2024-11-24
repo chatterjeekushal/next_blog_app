@@ -1,5 +1,5 @@
 
-'use client'
+
 
 import React, { useEffect } from 'react'
 import * as z from "@hookform/resolvers/zod"
