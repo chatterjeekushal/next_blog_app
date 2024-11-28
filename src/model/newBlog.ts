@@ -1,6 +1,7 @@
 
 
 import mongoose, { Schema, Document } from "mongoose";
+import { string } from "zod";
 
 
 export interface NewBlog extends Document {
@@ -13,7 +14,9 @@ export interface NewBlog extends Document {
     author: string;
     authorImage: string;
     blogImage: string;
-    date: Date;
+    date: string;
+    viewCount: number;
+    likes: number;
 }
 
 
@@ -68,9 +71,18 @@ const newBlogSchema = new Schema<NewBlog>({
     },
 
     date: {
-        type: Date,
+        type: String,
         required: [true, "Date is required"],
         trim: true,
+    },
+    viewCount: {
+        type: Number,
+        default: 0,
+    },
+
+    likes: {
+        type: Number,
+        default: 0,
     },
 
 }, { timestamps: true });

@@ -2,22 +2,21 @@
 import dbConnect from "@/lib/dbConnect";
 import NewBlogModel from "@/model/newBlog";
 
-
-
 export async function GET(req: Request) {
-
     await dbConnect();
 
+
+  
+
     try {
-        const allblogs = await NewBlogModel.find({});
+        // Fetch all blogs sorted by creation date
+        const allblogs = await NewBlogModel.find({}).sort({ createdAt: -1 });
 
-        console.log(allblogs)
+     
 
-        return Response.json({ message: "blogs fetched successfully", success: true, blogs: allblogs }, { status: 200 });
+        return Response.json({ message: "Blogs fetched successfully", success: true, blogs: allblogs }, { status: 200 });
     } catch (error) {
-
-        return Response.json({ message: "blogs fetching failed", success: false }, { status: 500 });
+        console.error(error);
+        return Response.json({ message: "Blogs fetching failed", success: false }, { status: 500 });
     }
-
-
 }
