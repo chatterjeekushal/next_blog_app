@@ -30,9 +30,9 @@ import {
 
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    name: 'John Doe',
+    email: 'johndoe@example.com',
+    avatar: 'https://example.com/avatar.jpg',
   },
   navMain: [
     {
@@ -43,7 +43,7 @@ const data = {
       items: [
         {
           title: "New Blog",
-          url: "#",
+          url: "/newBlog",
         },
         {
           title: "Delete Blog",
@@ -180,7 +180,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+      <NavUser user={data.user} />
       </SidebarFooter>
     </Sidebar>
   )

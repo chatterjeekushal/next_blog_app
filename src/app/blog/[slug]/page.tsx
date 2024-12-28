@@ -38,11 +38,27 @@ import { Textarea } from "@/components/ui/textarea"
 import { useForm } from "react-hook-form"
 
 interface BlogPost {
+  blogImage: any;
   slug: string;
   blogtitle: string;
   blogdescription: string;
   blogcontent: string;
+  author: string;
+  blogid: string;
+  date: string;
+  viewCount: number;
+  likes: number;
+  createdAt: string;
+  authorImage: string
 }
+
+interface comment {
+  comment: string,
+  blogcommentowner: string,
+  blogtitle: string,
+  blogid: string
+}
+
 
 interface PageProps {
   params: {
@@ -57,6 +73,7 @@ const formSchema = z.object({
 export default function Page({ params }: PageProps) {
   const [isShaking, setIsShaking] = useState(false);
   const [blog, setBlog] = useState<BlogPost | null>(null);
+  const [comments, setComments] = useState<comment[]>([]);
   const { toast } = useToast();
 
   const router = useRouter();
@@ -70,6 +87,8 @@ export default function Page({ params }: PageProps) {
 
   const slug = params.slug;
 
+  let newSlug = slug.replace(/-/g, " ");
+
   useEffect(() => {
     setIsShaking(true);
 
@@ -78,8 +97,19 @@ export default function Page({ params }: PageProps) {
       try {
         const response = await axios.get(`/api/add-views?slug=${slug}`);
 
+        console.log("response", response);
+
+        const response2 = await axios.get(`/api/all-comment?slug=${newSlug}`);
+
+
+
         if (response.data && response.data.blog) {
           setBlog(response.data.blog);
+          setComments(response2.data.blogs);
+
+          console.log(blog)
+
+
           toast({
             title: 'Success',
             description: response.data.message,
@@ -98,7 +128,7 @@ export default function Page({ params }: PageProps) {
     };
 
     fetchBlog();
-  }, [slug]); // Re-run effect when slug changes
+  }, [slug,newSlug]); // Re-run effect when slug changes
 
   // Customize the sanitization process
   const customSanitizeOptions = {
@@ -129,11 +159,11 @@ export default function Page({ params }: PageProps) {
 
   // Handle form submission
   const onSubmit = (data: any) => {
-   
-    let blogtitale= blog.blogtitle.trim();
 
-    let updatedata = {...data, blogtitale:blogtitale};
-    
+    let blogtitale = blog.blogtitle.trim().toLowerCase();
+
+    let updatedata = { ...data, blogtitale: blogtitale };
+
     console.log('Form submitted with data:', updatedata);
     // Handle form submission logic here
 
@@ -146,61 +176,137 @@ export default function Page({ params }: PageProps) {
 
   };
 
-  
+
   return (
-    <section className="bg-white w-full mt-20 min-h-screen m-auto border-t-4 dark:bg-gray-900">
-      {/* Dialog for Editing Profile */}
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button variant="outline" className='bg-black text-white'>Add Comment</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle> Add Comment </DialogTitle>
-            <DialogDescription>
-              Add your comment
-            </DialogDescription>
-          </DialogHeader>
+    
 
-          {/* Form inside dialog */}
-          <Form {...form} >
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <FormField
-                control={form.control}
-                name="comment"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Comment</FormLabel>
-                    <FormControl>
-                      <Textarea {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      Enter your comment
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit">Submit</Button>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
+    <section className="bg-white w-full mt-20 lg:ml-40 min-h-screen m-auto border-t-4 dark:bg-gray-900">
+  {/* Dialog for Editing Profile */}
+  <Dialog>
+    <DialogTrigger asChild>
+      <Button variant="outline" className='bg-black text-white'>Add Comment</Button>
+    </DialogTrigger>
+    <DialogContent className="sm:max-w-[425px] mx-auto">
+      <DialogHeader>
+        <DialogTitle> Add Comment </DialogTitle>
+        <DialogDescription>
+          Add your comment
+        </DialogDescription>
+      </DialogHeader>
 
-      {/* Main Content */}
-      <div className="py-8 px-4 w-full mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-16 lg:px-6">
-        <div className="flex flex-col justify-center items-start space-y-6 sm:space-y-8 lg:space-y-12">
-          <h2 className="text-4xl w-full font-extrabold text-gray-900 dark:text-white">
-            {blog.blogtitle}
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-400">
-            {blog.blogdescription}
+      {/* Form inside dialog */}
+      <Form {...form} >
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <FormField
+            control={form.control}
+            name="comment"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Comment</FormLabel>
+                <FormControl>
+                  <Textarea {...field} />
+                </FormControl>
+                <FormDescription>
+                  Enter your comment
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button type="submit" className="w-full sm:w-auto">Submit</Button>
+        </form>
+      </Form>
+    </DialogContent>
+  </Dialog>
+
+  {/* Blog Image */}
+  <div
+    className="relative w-full h-52 bg-cover bg-center bg-no-repeat sm:h-80 lg:h-96"
+    style={{ backgroundImage: `url(${blog.blogImage})` }}
+  ></div>
+
+  {/* Blog Writer */}
+  <address className="flex items-center mb-6 not-italic lg:mt-20 flex-col sm:flex-row mt-14">
+    <div className="inline-flex items-center mb-4 sm:mb-0 sm:mr-3 text-sm text-gray-900 dark:text-white">
+      <img
+        className="mr-4 w-16 h-16 rounded-full"
+        src={`${blog.authorImage}`}
+        alt="Jese Leos"
+      />
+      <div>
+        <a
+          href={`/profile/${blog.author}`}
+          rel="author"
+          className="text-xl font-bold text-gray-900 dark:text-white"
+        >
+          {blog.author}
+        </a>
+        <p className="text-base text-gray-500 dark:text-gray-400">
+          Verified author OF BlogHub
+        </p>
+        <p className="text-base text-gray-500 dark:text-gray-400">
+          <time
+            dateTime="2022-02-08"
+            title="February 8th, 2022"
+          >
+            {new Date(blog.createdAt).toLocaleDateString('en-US', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric',
+            })}
+          </time>
+        </p>
+      </div>
+    </div>
+  </address>
+
+  {/* Main Content */}
+  <div className="py-8 px-4 w-full mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-16 lg:px-6">
+    <div className="flex flex-col justify-center items-start space-y-6 sm:space-y-8 lg:space-y-12">
+      <h2 className="text-4xl w-full font-extrabold text-gray-900 dark:text-white">
+        {blog.blogtitle}
+      </h2>
+      <p className="text-lg text-gray-600 dark:text-gray-400">
+        {blog.blogdescription}
+      </p>
+
+      <div className="prose w-full max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: sanitizedContent }}></div>
+    </div>
+  </div>
+
+  <div className='text-3xl font-bold mb-2 ml-4 md:mt-12 bg-gray-50 dark:bg-gray-800'>Comments</div>
+
+  {comments.length > 0 && (
+    comments.map((comment: any, index: number) => (
+      <div className="flex w-full p-4 max-w-lg flex-col rounded-lg bg-white shadow-sm border border-slate-200 my-6 overflow-scroll">
+        <div className="flex items-center gap-4 text-slate-800">
+          <div className="flex w-full flex-col">
+            <div className="flex items-center justify-between">
+              <h5 className="text-xl font-semibold text-slate-800">
+                {comment.blogcommentowner}
+              </h5>
+              <div className="flex items-center gap-0.5">
+                {/* Star Icons */}
+              </div>
+            </div>
+            <p className="text-xs uppercase font-bold text-slate-500 mt-0.5">
+              @kushalblog
+            </p>
+          </div>
+        </div>
+        <div className="mt-6">
+          <p className="text-base text-slate-600 font-light leading-normal">
+            {comment.comment}
           </p>
-
-          <div className="prose w-full max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: sanitizedContent }}></div>
         </div>
       </div>
-    </section>
+    ))
+  )}
+
+</section>
+
+
+
   );
 }
 

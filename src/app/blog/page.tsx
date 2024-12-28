@@ -48,6 +48,7 @@ export default function Blog() {
         const fetchBlogs = async () => {
             try {
                 const response = await axios.get(`/api/all-blogs`);
+               
 
                 if (response.data.success) {
                     setBlogs(response.data.blogs);  // Store fetched blogs in the state
