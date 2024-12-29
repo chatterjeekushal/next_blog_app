@@ -180,129 +180,148 @@ export default function Page({ params }: PageProps) {
   return (
     
 
-    <section className="bg-white w-full mt-20 lg:ml-40 min-h-screen m-auto border-t-4 dark:bg-gray-900">
-  {/* Dialog for Editing Profile */}
-  <Dialog>
-    <DialogTrigger asChild>
-      <Button variant="outline" className='bg-black text-white'>Add Comment</Button>
-    </DialogTrigger>
-    <DialogContent className="sm:max-w-[425px] mx-auto">
-      <DialogHeader>
-        <DialogTitle> Add Comment </DialogTitle>
-        <DialogDescription>
-          Add your comment
-        </DialogDescription>
-      </DialogHeader>
+    <section className="pt-8 pb-16 lg:pt-16 lg:pb-24 mt-20 bg-white dark:bg-gray-900 antialiased">
+  <div className="flex justify-between px-4 mx-auto max-w-screen-xl">
+    <article className="mx-auto w-full max-w-2xl format format-sm sm:format-base lg:format-lg format-blue dark:format-invert">
+      
+    
 
-      {/* Form inside dialog */}
-      <Form {...form} >
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="comment"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Comment</FormLabel>
-                <FormControl>
-                  <Textarea {...field} />
-                </FormControl>
-                <FormDescription>
-                  Enter your comment
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit" className="w-full sm:w-auto">Submit</Button>
-        </form>
-      </Form>
-    </DialogContent>
-  </Dialog>
+      {/* Blog Image */}
+      <div
+        className="relative w-full mt-5 sm:w-9/12 lg:w-full h-64 sm:h-80 lg:h-96 mx-auto bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${blog.blogImage})` }}
+      ></div>
 
-  {/* Blog Image */}
-  <div
-    className="relative w-full h-52 bg-cover bg-center bg-no-repeat sm:h-80 lg:h-96"
-    style={{ backgroundImage: `url(${blog.blogImage})` }}
-  ></div>
-
-  {/* Blog Writer */}
-  <address className="flex items-center mb-6 not-italic lg:mt-20 flex-col sm:flex-row mt-14">
-    <div className="inline-flex items-center mb-4 sm:mb-0 sm:mr-3 text-sm text-gray-900 dark:text-white">
-      <img
-        className="mr-4 w-16 h-16 rounded-full"
-        src={`${blog.authorImage}`}
-        alt="Jese Leos"
-      />
-      <div>
-        <a
-          href={`/profile/${blog.author}`}
-          rel="author"
-          className="text-xl font-bold text-gray-900 dark:text-white"
-        >
-          {blog.author}
-        </a>
-        <p className="text-base text-gray-500 dark:text-gray-400">
-          Verified author OF BlogHub
-        </p>
-        <p className="text-base text-gray-500 dark:text-gray-400">
-          <time
-            dateTime="2022-02-08"
-            title="February 8th, 2022"
-          >
-            {new Date(blog.createdAt).toLocaleDateString('en-US', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-            })}
-          </time>
-        </p>
-      </div>
-    </div>
-  </address>
-
-  {/* Main Content */}
-  <div className="py-8 px-4 w-full mx-auto max-w-screen-xl lg:grid lg:grid-cols-2 lg:py-16 lg:px-6">
-    <div className="flex flex-col justify-center items-start space-y-6 sm:space-y-8 lg:space-y-12">
-      <h2 className="text-4xl w-full font-extrabold text-gray-900 dark:text-white">
-        {blog.blogtitle}
-      </h2>
-      <p className="text-lg text-gray-600 dark:text-gray-400">
+      {/* Blog Writer */}
+      <header className="mb-4 lg:mb-6 not-format">
+        <address className="flex items-center mb-6 not-italic mt-10">
+          <div className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">
+            <img
+              className="mr-4 w-16 h-16 rounded-full"
+              src={blog.authorImage}
+              alt={blog.author}
+            />
+            <div>
+              <a
+                href={`/profile/${blog.author}`}
+                rel="author"
+                className="text-xl font-bold text-gray-900 dark:text-white"
+              >
+                {blog.author}
+              </a>
+              <p className="text-base text-gray-500 dark:text-gray-400">
+                Verified author OF BlogHub
+              </p>
+              <p className="text-base text-gray-500 dark:text-gray-400">
+                <time
+                  dateTime={blog.createdAt}
+                  title={new Date(blog.createdAt).toLocaleDateString('en-US', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  })}
+                >
+                  {new Date(blog.createdAt).toLocaleDateString('en-US', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  })}
+                </time>
+              </p>
+            </div>
+          </div>
+        </address>
+        
+        <h1 className="mb-4 text-3xl font-extrabold leading-tight text-gray-900 lg:mb-6 lg:text-4xl dark:text-white">
+          {blog.blogtitle}
+        </h1>
+      </header>
+      
+      <p className="lead text-lg text-gray-600 dark:text-gray-400">
         {blog.blogdescription}
       </p>
 
+      {/* Main Content */}
       <div className="prose w-full max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: sanitizedContent }}></div>
-    </div>
-  </div>
 
-  <div className='text-3xl font-bold mb-2 ml-4 md:mt-12 bg-gray-50 dark:bg-gray-800'>Comments</div>
+     
 
-  {comments.length > 0 && (
-    comments.map((comment: any, index: number) => (
-      <div className="flex w-full p-4 max-w-lg flex-col rounded-lg bg-white shadow-sm border border-slate-200 my-6 overflow-scroll">
-        <div className="flex items-center gap-4 text-slate-800">
-          <div className="flex w-full flex-col">
-            <div className="flex items-center justify-between">
-              <h5 className="text-xl font-semibold text-slate-800">
-                {comment.blogcommentowner}
-              </h5>
-              <div className="flex items-center gap-0.5">
-                {/* Star Icons */}
+
+  {/* Dialog for Editing Profile */}
+  <Dialog>
+        <DialogTrigger asChild>
+          <Button variant="outline" className="bg-black text-white m-9">Add Comment</Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px] mx-auto">
+          <DialogHeader>
+            <DialogTitle>Add Comment</DialogTitle>
+            <DialogDescription>Add your comment</DialogDescription>
+          </DialogHeader>
+
+          {/* Form inside dialog */}
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <FormField
+                control={form.control}
+                name="comment"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Comment</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} />
+                    </FormControl>
+                    <FormDescription>Enter your comment</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" className="w-full sm:w-auto">Submit</Button>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
+
+
+ {/* Comments Section */}
+ <div className="text-3xl font-bold mb-2 ml-4 md:mt-12 bg-gray-50 dark:bg-gray-800">
+        Comments
+      </div>
+
+
+      {/* Comments List */}
+      {comments.length > 0 ? (
+        comments.map((comment, index) => (
+          <div
+            key={index}
+            className="flex w-full p-4 max-w-lg flex-col rounded-lg bg-white shadow-sm border border-slate-200 my-6"
+          >
+            <div className="flex items-center gap-4 text-slate-800">
+              <div className="flex w-full flex-col">
+                <div className="flex items-center justify-between">
+                  <h5 className="text-xl font-semibold text-slate-800">
+                    {comment.blogcommentowner}
+                  </h5>
+                  <div className="flex items-center gap-0.5">
+                    {/* Star Icons (optional feature) */}
+                  </div>
+                </div>
+                <p className="text-xs uppercase font-bold text-slate-500 mt-0.5">
+                  @{comment.blogcommentowner}
+                </p>
               </div>
             </div>
-            <p className="text-xs uppercase font-bold text-slate-500 mt-0.5">
-              @kushalblog
-            </p>
+            <div className="mt-6">
+              <p className="text-base text-slate-600 font-light leading-normal">
+                {comment.comment}
+              </p>
+            </div>
           </div>
-        </div>
-        <div className="mt-6">
-          <p className="text-base text-slate-600 font-light leading-normal">
-            {comment.comment}
-          </p>
-        </div>
-      </div>
-    ))
-  )}
-
+        ))
+      ) : (
+        <p className="text-gray-500 dark:text-gray-400">No comments yet.</p>
+      )}
+    </article>
+  </div>
 </section>
 
 

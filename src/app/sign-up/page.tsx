@@ -1,5 +1,5 @@
 
-
+'use client'
 
 import React, { useEffect } from 'react'
 import * as z from "@hookform/resolvers/zod"
@@ -263,6 +263,11 @@ return (
                 >
                     Sign in with GitHub
                 </Button>
+
+
+            
+
+
             </div>
 
         <div className="mt-4 text-center">

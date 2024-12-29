@@ -1,6 +1,7 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/user"; // Your User model for database
@@ -12,6 +13,15 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GITHUB_CLIENT_ID as string, // GitHub OAuth client ID
       clientSecret: process.env.GITHUB_CLIENT_SECRET as string, // GitHub OAuth client secret // Scopes to request from GitHub
     }),
+
+    // Add more providers here
+
+    // Google provider
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string, // Google OAuth client ID
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string, // Google OAuth client secret
+    }),
+
 
     // Credentials provider
     CredentialsProvider({
@@ -82,8 +92,35 @@ export const authOptions: NextAuthOptions = {
           });
         }
       }
+
+      if(account?.provider === "google"){
+
+        await dbConnect();
+
+        console.log("user google", user);
+
+        // Check if the user already exists by Google email or username
+        const existingUser = await UserModel.findOne({ username: user.name });
+
+        if (!existingUser) {
+          // Create a new user if they do not exist
+          await UserModel.create({
+            username: user.name || "google_", // Google username (fallback to email username if missing)
+            email: user.email, // Google email
+            password: "google", // Set password to empty string since Google OAuth doesn't use a password
+            verified: "12345", // You can set this to true by default since Google OAuth user is considered verified
+            verifyexpires: Date.now(), // Set verifyexpires to null if not applicable
+            isverified: true, // Set isverified to true since the user is authenticated via Google OAuth
+            isactive: true, // Set isactive to true since the user is authenticated via Google
+          })
+
+      }
+    }
+
       return true;
     },
+
+
 
     // JWT callback
     async jwt({ token, user }) {
