@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const cardData = [
   {
@@ -43,6 +44,9 @@ const Card = () => {
 
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-fit 2xl:gap-40 2xl:mr-24'>
         {cardData.map((card) => (
+
+<Link href="/dashboard">
+
           <div key={card.id} className="my-6 2xl:w-auto">
             <a 
               href="#" 
@@ -81,6 +85,8 @@ const Card = () => {
               </div>
             </a>
           </div>
+
+          </Link>      
         ))}
       </div>
     </div>

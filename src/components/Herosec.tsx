@@ -28,7 +28,7 @@ function HeroSection() {
 
           <div className="flex flex-col items-center justify-center w-full h-screen text-center lg:flex-row mt-10 md:mt-24 lg:mt-28">
             <div className="lg:w-1/2 lg:-mt-8 md:ml-10 px-4 flex flex-col items-center justify-center ">
-              <h1 className="text-2xl leading-snug text-gray-800 dark:text-gray-200 md:text-3xl lg:text-4xl">
+              <h1 className="text-5xl leading-snug text-gray-800 dark:text-gray-200 md:text-3xl lg:text-4xl">
                 Welcome to <span className="font-semibold">Kushal&apos;s Blog</span> for Update <br className="hidden lg:block" />
                 Blog and Learn <span className="font-semibold underline decoration-primary"><span ref={el} /></span>
               </h1>
