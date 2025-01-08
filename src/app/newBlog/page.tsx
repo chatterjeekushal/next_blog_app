@@ -31,6 +31,8 @@ function Page() {
 
     const [isSubmitting, setIsSubmitting] = useState(false)
 
+    const [blogImage, setBlogImage] = useState<File | null>(null)
+
     const editorRef = useRef<any>(null)
 
     // zod form validation schema
@@ -40,59 +42,61 @@ function Page() {
             blogtitle: "",
             blogdescription: "",
             blogcontent: "",
-            blogImage: "",
+           
+                      
         }
     })
 
     const handleSubmit = async (data: any) => {
         setIsSubmitting(true)
 
-        // Get the content from the TinyMCE editor
+        // get the editor content
         const content = editorRef.current.getContent()
 
-        // Merge the editor content into the form data
-        const formData = {
-            ...data,
-            blogcontent: content,
+        const formData = new FormData()
+
+        // Append the data to the FormData
+        formData.append('blogtitle', data.blogtitle)
+        formData.append('blogdescription', data.blogdescription)
+        formData.append('blogcontent', content)
+        
+        // Make sure blogImage is attached before sending it
+        if (blogImage) {
+            formData.append('blogImage', blogImage)
         }
 
-        console.log("Form Data to submit:", formData)
+        console.log("data", formData)
 
         try {
-            // You can send data to your backend here using axios
-            const response = await axios.post('/api/new-blog', formData)
+            // Send data to your backend using axios with FormData
+            const response = await axios.post('/api/new-blog', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data', // Make sure this is set
+                }
+            })
 
             console.log("response", response)
-
-            // For now, logging to console:
-            console.log('Form submitted with data:', formData)
 
             toast({
                 title: 'Blog Created!',
                 description: 'Your blog has been successfully created.',
             })
 
-            // Optionally redirect after form submission
-            // Redirect to the blog list or another page
-
+          
         } catch (error) {
-            console.log("error in singup", error);
+            console.log("error in creating blog", error)
 
-            const axiosError = error as AxiosError;
+            const axiosError = error as AxiosError
 
             if (axiosError.response) {
-
-                const serverResponse = axiosError.response.data as ApiResponce;
-                const serverMessage = serverResponse.error?.[0] || serverResponse.message;
+                const serverResponse = axiosError.response.data as ApiResponce
+                const serverMessage = serverResponse.error?.[0] || serverResponse.message
 
                 if (serverMessage) {
-                    toast({ title: 'error', description: serverMessage })
-                    setIsSubmitting(false) // Show the server's error message
+                    toast({ title: 'Error', description: serverMessage })
                 } else {
-                    toast({ title: 'error', description: "user not created" })
-                    setIsSubmitting(false)
+                    toast({ title: 'Error', description: "Blog creation failed." })
                 }
-
             }
         } finally {
             setIsSubmitting(false)
@@ -101,7 +105,7 @@ function Page() {
 
     return (
         <div className="flex flex-col items-center justify-center w-full h-screen bg-gray-50 py-12 px-4 sm:px-6 md:px-8 lg:px-10 mt-64 md:mt-96">
-            <h1 className="text-3xl font-bold text-center text-gray-900 mb-8 ">Create New Blog</h1>
+            <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">Create New Blog</h1>
 
             <div className="flex flex-col items-center justify-center w-full">
 
@@ -152,29 +156,22 @@ function Page() {
                             )}
                         />
 
-
-                        {/* Blog image Field */}
-                        <FormField
-                            control={form.control}
-                            name="blogImage"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel className="text-sm font-medium text-gray-700">Blog Image URL</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder="Enter blog image URL"
-                                            {...field}
-                                            className="mt-2 p-4 w-full border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-200 ease-in-out"
-                                        />
-                                    </FormControl>
-                                    <FormDescription className="text-sm text-red-400">
-                                        Plese enter your http image URL
-                                    </FormDescription>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
+                        {/* Blog Image Field */}
+                        <FormItem>
+                            <FormLabel className="text-sm font-medium text-gray-700">Blog Image</FormLabel>
+                            <FormControl>
+                                <Input
+                                    type="file"
+                                    onChange={(e) => {
+                                        const file = e.target.files?.[0]
+                                        if (file) {
+                                            setBlogImage(file)
+                                        }
+                                    }}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
 
                         {/* Blog Content Field */}
                         <FormField
@@ -185,7 +182,7 @@ function Page() {
                                     <FormLabel className="text-sm font-medium text-gray-700">Blog Content</FormLabel>
                                     <FormControl>
                                         <Editor
-                                            apiKey='7i6hkkszamf97bvcdsd1r8b2f4hnfbfy113b17sulfit8hyc'
+                                            apiKey="7i6hkkszamf97bvcdsd1r8b2f4hnfbfy113b17sulfit8hyc"
                                             onInit={(_evt, editor) => editorRef.current = editor}
                                             initialValue="<p>This is the initial content of the editor.</p>"
                                             init={{

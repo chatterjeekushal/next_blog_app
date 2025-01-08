@@ -16,7 +16,7 @@ const PricingPlans = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* Featured Post 1 */}
-        <article className="bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden transform hover:translate-y-[-4px] transition-all duration-300 animate__animated animate__fadeInUp">
+        <article className="bg-neutral-100 dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden transform hover:translate-y-[-4px] transition-all duration-300 animate__animated animate__fadeInUp">
           <div className="p-6">
             <div className="flex items-center mb-4">
               <span className="bg-indigo-100 dark:bg-indigo-900 text-indigo-800 dark:text-indigo-200 text-sm font-medium px-3 py-1 rounded-full">Technology</span>
@@ -35,7 +35,7 @@ const PricingPlans = () => {
         </article>
 
         {/* Featured Post 2 */}
-        <article className="bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden transform hover:translate-y-[-4px] transition-all duration-300 animate__animated animate__fadeInUp animation-delay-200">
+        <article className="bg-neutral-100 dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden transform hover:translate-y-[-4px] transition-all duration-300 animate__animated animate__fadeInUp animation-delay-200">
           <div className="p-6">
             <div className="flex items-center mb-4">
               <span className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-sm font-medium px-3 py-1 rounded-full">Lifestyle</span>
@@ -54,7 +54,7 @@ const PricingPlans = () => {
         </article>
 
         {/* Featured Post 3 */}
-        <article className="bg-white dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden transform hover:translate-y-[-4px] transition-all duration-300 animate__animated animate__fadeInUp animation-delay-400">
+        <article className="bg-neutral-100 dark:bg-gray-900 rounded-lg shadow-lg overflow-hidden transform hover:translate-y-[-4px] transition-all duration-300 animate__animated animate__fadeInUp animation-delay-400">
           <div className="p-6">
             <div className="flex items-center mb-4">
               <span className="bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200 text-sm font-medium px-3 py-1 rounded-full">Health</span>

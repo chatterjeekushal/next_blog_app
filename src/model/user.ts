@@ -11,6 +11,7 @@ export interface User extends Document {
     verifyexpires: Date;
     isverified: boolean;
     isactive: boolean;
+    userImage: string;
 
 }
 
@@ -36,6 +37,11 @@ const userSchema = new Schema<User>({
     password: {
         type: String,
         required: [true, "Password is required"],
+    },
+
+    userImage: {
+        type: String,
+        
     },
     
     verified: {

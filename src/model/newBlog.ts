@@ -1,6 +1,7 @@
 
 
 import mongoose, { Schema, Document } from "mongoose";
+import { fileURLToPath } from "url";
 import { string } from "zod";
 
 
@@ -13,10 +14,11 @@ export interface NewBlog extends Document {
     slug: string;
     author: string;
     authorImage: string;
-    blogImage: string;
+    blogImage: File;
     date: string;
     viewCount: number;
     likes: number;
+    blogcategory: string
 }
 
 
@@ -31,6 +33,12 @@ const newBlogSchema = new Schema<NewBlog>({
     blogtitle: {
         type: String,
         required: [true, "Blogtitle is required"],
+        trim: true,
+    },
+
+    blogcategory: {
+        type: String,
+        
         trim: true,
     },
 
@@ -67,7 +75,6 @@ const newBlogSchema = new Schema<NewBlog>({
     blogImage: {
         type: String,
         required: [true, "Imageupload is required"],
-        trim: true,
     },
 
     date: {

@@ -102,6 +102,8 @@ export const authOptions: NextAuthOptions = {
         token.isverified = user.isverified;
         token.isactive = user.isactive;
         token.username = user.username;
+        token.userImage=user.userImage?.toString();
+        
       }
       return token;
     },
@@ -113,6 +115,8 @@ export const authOptions: NextAuthOptions = {
         session.user.isverified = token.isverified;
         session.user.isactive = token.isactive;
         session.user.username = token.username;
+        session.user.userImage=token.userImage;
+        
       }
       return session;
     },

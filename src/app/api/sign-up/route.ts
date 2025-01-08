@@ -61,6 +61,7 @@ export async function POST(req: Request) {
             verifyexpires: expiryDate,
             isverified: false,
             isactive: false,
+            userImage: "https://img.freepik.com/free-vector/gradient-avatar-illustration_23-2150891915.jpg?t=st=1735986653~exp=1735990253~hmac=00aa402504cee671970ad0bb7c1b35506302c807e4f5e9b44b1c6b692d4c6c9b&w=740",
         });
 
         // Save the new user to the database

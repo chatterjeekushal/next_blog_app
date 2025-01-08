@@ -1,5 +1,7 @@
 
+'use client'
 
+import Link from 'next/link';
 import React from 'react';
 
 const ExploreCategories = () => {
@@ -11,6 +13,8 @@ const ExploreCategories = () => {
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+
         {/* Technology Category */}
         <div className="group bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl animate__animated animate__fadeInUp">
           <div className="p-6 border-l-4 border-blue-500">
@@ -24,14 +28,17 @@ const ExploreCategories = () => {
             </div>
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Technology</h3>
             <p className="text-gray-600 dark:text-gray-300 mb-4">Latest in tech, AI, and digital transformation</p>
-            <a href="#" className="inline-flex items-center text-blue-500 hover:text-blue-600">
+            <Link href="/catagary-blog/travel" className="inline-flex items-center text-blue-500 hover:text-blue-600">
               Explore More
               <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"></path>
               </svg>
-            </a>
+            </Link>
           </div>
         </div>
+
+
+
 
         {/* Lifestyle Category */}
         <div className="group bg-white dark:bg-gray-900 rounded-xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-2xl animate__animated animate__fadeInUp" style={{ animationDelay: '0.2s' }}>

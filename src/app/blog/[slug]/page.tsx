@@ -42,6 +42,7 @@ interface BlogPost {
   slug: string;
   blogtitle: string;
   blogdescription: string;
+  blogcategory: string;
   blogcontent: string;
   author: string;
   blogid: string;

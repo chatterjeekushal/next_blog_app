@@ -51,7 +51,7 @@ function Navbar() {
     console.log("user", user)
     console.log("session", session?.user.email)
 
-
+    const imageSrc = session?.user?.image || session?.user?.userImage || '/default-avatar.png';
 
 
     return (
@@ -64,7 +64,7 @@ function Navbar() {
                 <div className="flex items-center md:order-2 space-x-6 md:space-x-0 rtl:space-x-reverse">
 
                     <Avatar className='mr-5 hidden md:block md:w-10 h-10'>
-                        <AvatarImage src={`${session?.user?.image}`} alt="@shadcn" />
+                        <AvatarImage src={`${imageSrc}`} alt="@shadcn" />
                         <AvatarFallback>cn</AvatarFallback>
                     </Avatar>
 

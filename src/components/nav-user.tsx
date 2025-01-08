@@ -44,6 +44,9 @@ export function NavUser({
   console.log("user", user);
   console.log("session", session);
 
+   // Determine the image source based on session.user.image or fallback to userImage
+   const imageSrc = session?.user?.image || session?.user?.userImage || '/default-avatar.png';
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -54,7 +57,7 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={`${session?.user?.image}`} alt={`${session?.user?.username}`} />
+                <AvatarImage src={ `${imageSrc}`} alt={`${session?.user?.username}`} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
