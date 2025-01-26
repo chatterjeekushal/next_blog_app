@@ -1,13 +1,11 @@
 
 'use client'
 
-import React, { useEffect, useState } from 'react';
-import Image from "next/image";
-import { CardBody, CardContainer, CardItem } from "@/components/ui/3d-card";
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+import Blogcard from '@/components/Blogcard';
 
 interface Blog {
     blogid: string | number;
@@ -16,44 +14,46 @@ interface Blog {
     blogcontent: string;
     authorImage: string;
     author: string;
-    date: string; // Date is stored as string from the backend
+    date: string;
     blogImage: string;
     slug: string;
     viewCount: number;
     likes: number;
+    blogcategory?: string;
 }
 
 export default function Blog() {
     const [isShaking, setIsShaking] = useState(false);
     const [allBlogs, setBlogs] = useState<Blog[]>([]);
+    const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [category, setCategory] = useState<string>('');
+   
+
     const { toast } = useToast();
     const router = useRouter();
 
-    // Function to format date and time
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString); // Convert the date string into a Date object
-        const optionsDate: Intl.DateTimeFormatOptions = { day: '2-digit', month: '2-digit', year: '2-digit' };
-        const formattedDate = date.toLocaleDateString('en-GB', optionsDate); // Format date as dd/mm/yy
+    // Handler for the search input change
+    const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchQuery(e.target.value);
+    }, []);
 
-        const optionsTime: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit', hour12: true };
-        const formattedTime = date.toLocaleTimeString('en-GB', optionsTime); // Format time as hh:mm AM/PM
-
-        return `${formattedDate} : ${formattedTime}`;
+    const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setCategory(e.target.value);
     };
 
-    // UseEffect hook to fetch blogs asynchronously
+ 
+
+    // Fetch blogs and apply filters when the component mounts or when any filter changes
     useEffect(() => {
         setIsShaking(true);
 
-        // Async function to fetch blog data
         const fetchBlogs = async () => {
             try {
                 const response = await axios.get(`/api/all-blogs`);
-               
 
                 if (response.data.success) {
-                    setBlogs(response.data.blogs);  // Store fetched blogs in the state
-
+                    setBlogs(response.data.blogs); // Store fetched blogs in the state
                     toast({
                         title: 'Success',
                         description: response.data.message,
@@ -78,54 +78,128 @@ export default function Blog() {
         };
 
         fetchBlogs();
-    }, []); // Empty dependency array ensures this runs once when component mounts
+    }, []); // This only runs once on mount
+
+    // Function to filter blogs based on current filters
+    const filterBlogs = () => {
+        let filtered = allBlogs;
+
+        // Apply category filter
+        if (category) {
+            filtered = filtered.filter(blog => blog.blogcategory == category);
+
+           
+        }
+
+
+
+        // Apply search query filter
+        if (searchQuery) {
+            filtered = filtered.filter(blog =>
+                blog.blogtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                blog.blogdescription.toLowerCase().includes(searchQuery.toLowerCase()) 
+                
+            );
+        }
+
+      
+
+       
+        setFilteredBlogs(filtered);
+
+        console.log("filteredBlogs", filteredBlogs);
+    };
+
+    // Trigger filter on changes
+    useEffect(() => {
+        filterBlogs();
+    }, [allBlogs, category,  searchQuery]); // Runs on changes to any of the filters
 
     return (
-       
-        <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 mt-20 ml-4 lg:ml-10">
-    {allBlogs.length === 0 ? (
-        <div className="col-span-full text-center text-xl font-semibold text-neutral-700 dark:text-neutral-300">
-            No blogs available
-        </div>
-    ) : (
-        allBlogs.map((blog: Blog) => (
-            <Link href={`/blog/${blog.slug}`} key={blog.slug}>
-                <div className="relative flex flex-col my-6 bg-white dark:bg-neutral-800 shadow-sm border border-slate-200 dark:border-neutral-700 rounded-lg w-96">
-                    <div className="relative h-56 m-2.5 overflow-hidden text-white rounded-md">
-                        <img 
-                            src={`${blog.blogImage}`}
-                            alt="card-image" 
-                        />
-                    </div>
-                    <div className="p-4">
-                        <div className="mb-4 rounded-full bg-cyan-600 py-0.5 px-2.5 border border-transparent text-xs text-white transition-all shadow-sm w-20 text-center">
-                            POPULAR
+        <>
+            <section className='w-full mx-auto px-4 py-36 bg-black text-white rounded-lg shadow-lg animate__animated animate__fadeIn'>
+                <div className="text-center">
+                    <h1 className="text-4xl md:text-6xl font-bold mb-6 animate__animated animate__fadeIn">
+                        Explore Our Blog {category} 
+                    </h1>
+
+                    <p className="text-xl md:text-2xl text-gray-300 mb-8 max-w-3xl mx-auto animate__animated animate__fadeIn animate__delay-1s">
+                        Discover insightful articles, expert opinions, and the latest trends in technology, design, and development.
+                    </p>
+                    <div className="flex justify-center space-x-4 animate__animated animate__fadeIn animate__delay-2s">
+                        <div className="bg-neutral-800 p-4 rounded-lg text-center">
+                            <span className="block text-3xl font-bold text-white">500+</span>
+                            <span className="text-gray-400">Articles</span>
                         </div>
-                        <h6 className="mb-2 text-slate-800 dark:text-neutral-100 text-xl font-semibold">
-                            {blog.blogtitle}
-                        </h6>
-                        <p className="text-slate-600 dark:text-neutral-300 leading-normal font-light">
-                            {blog.blogdescription}
-                        </p>
-                    </div>
-                    <div className="flex items-center justify-between p-4">
-                        <div className="flex items-center">
-                            <img
-                                alt="Tania Andrew"
-                                src={`${blog.authorImage}`}
-                                className="relative inline-block h-8 w-8 rounded-full"
-                            />
-                            <div className="flex flex-col ml-3 text-sm">
-                                <span className="text-slate-800 dark:text-neutral-100 font-semibold">{blog.author}</span>
-                                <span className="text-slate-600 dark:text-neutral-300">{formatDate(blog.date)}</span>
-                            </div>
+                        <div className="bg-neutral-800 p-4 rounded-lg text-center">
+                            <span className="block text-3xl font-bold text-white">50k+</span>
+                            <span className="text-gray-400">Readers</span>
+                        </div>
+                        <div className="bg-neutral-800 p-4 rounded-lg text-center">
+                            <span className="block text-3xl font-bold text-white">100+</span>
+                            <span className="text-gray-400">Authors</span>
                         </div>
                     </div>
                 </div>
-            </Link>
-        ))
-    )}
-</div>
+            </section>
 
+            <section className='w-full mx-auto px-4 py-12 bg-white text-black rounded-lg shadow-lg animate__animated animate__fadeIn'>
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
+                        <div className="w-full md:w-1/2">
+                            <div className="relative">
+                                <input
+                                    type="search"
+                                    id="searchInput"
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
+                                    className="w-full p-4 pl-12 text-sm border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500"
+                                    placeholder="Search articles..."
+                                />
+                                <svg
+                                    className="absolute left-4 top-4 h-5 w-5 text-gray-400"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                    />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-wrap gap-3 w-full md:w-auto">
+                            <select
+                                id="categoryFilter"
+                                value={category}
+                                onChange={handleCategoryChange}
+                                className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-blue-500"
+                            >
+                                <option value="">All Categories</option>
+                                <option value="technology">Technology</option>
+                                <option value="design">Design</option>
+                                <option value="development">Development</option>
+                                <option value="business">Business</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section className='w-full mx-auto px-4 py-12 bg-white text-black rounded-lg shadow-lg animate__animated animate__fadeIn '>
+                <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-2 ">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 m-auto animate__animated animate__fadeIn animate__delay-1s">
+                        {filteredBlogs.map((blog) => (
+                            <Blogcard key={blog.blogid} blog={blog} />
+                        ))}
+                    </div>
+                </div>
+            </section>
+        </>
     );
 }

@@ -122,6 +122,7 @@ export async function POST(req: Request) {
                 blogtitle: blogtitle,
                 blogdescription: blogdescription,
                 blogcontent: blogcontent,
+                blogcategory: "Technology",
                 slug: slug,
                 author: user?.username,
                 authorImage: session?.user?.image || "default_image", // fallback for authorImage

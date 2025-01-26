@@ -39,6 +39,7 @@
     "class-variance-authority": "^0.7.0",
     "cloudinary": "^2.5.1",
     "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
     "framer-motion": "^11.11.17",
     "fs": "^0.0.1-security",
     "fs-extra": "^11.2.0",
