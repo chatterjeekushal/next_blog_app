@@ -48,6 +48,7 @@ export async function POST(req: Request) {
     const blogcontent = formData.get("blogcontent");
     const blogdescription = formData.get("blogdescription");
     const blogImage = formData.get("blogImage") as File | null;
+    const blogcatagory = formData.get("blogcatagory") as string;
 
     if (!blogtitle || !blogcontent || !blogdescription || !blogImage) {
         return new Response(
@@ -122,7 +123,7 @@ export async function POST(req: Request) {
                 blogtitle: blogtitle,
                 blogdescription: blogdescription,
                 blogcontent: blogcontent,
-                blogcategory: "Technology",
+                blogcategory: blogcatagory,
                 slug: slug,
                 author: user?.username,
                 authorImage: session?.user?.image || "default_image", // fallback for authorImage

@@ -80,6 +80,9 @@ export default function Blog() {
         fetchBlogs();
     }, []); // This only runs once on mount
 
+
+
+
     // Function to filter blogs based on current filters
     const filterBlogs = () => {
         let filtered = allBlogs;
@@ -87,11 +90,8 @@ export default function Blog() {
         // Apply category filter
         if (category) {
             filtered = filtered.filter(blog => blog.blogcategory == category);
-
-           
+  
         }
-
-
 
         // Apply search query filter
         if (searchQuery) {
@@ -181,9 +181,10 @@ export default function Blog() {
                             >
                                 <option value="">All Categories</option>
                                 <option value="technology">Technology</option>
-                                <option value="design">Design</option>
-                                <option value="development">Development</option>
                                 <option value="business">Business</option>
+                                <option value="health">Health & Lifestyle</option>
+                                <option value="travel">Travel</option>
+                                <option value="politics">Politics</option>
                             </select>
 
                         </div>

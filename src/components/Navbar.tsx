@@ -106,7 +106,7 @@ function Navbar() {
                                                 <Link href="/blog" className={`hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors duration-200 ${isActive('/blog') ? 'text-blue-700' : 'dark:text-gray-300'}`}>Blog</Link>
                                             </li>
                                             <li>
-                                                <Link href="/contact" className={`hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors duration-200 ${isActive('/contact') ? 'text-blue-700' : 'dark:text-gray-300'}`}>Contact</Link>
+                                                <Link href="/dashboard" className={`hover:text-neutral-500 dark:hover:text-neutral-400 transition-colors duration-200 ${isActive('/contact') ? 'text-blue-700' : 'dark:text-gray-300'}`}>Dashboard</Link>
                                             </li>
                                         </ul>
                                     </div>

@@ -1,38 +1,49 @@
 
+import React from 'react';
+import { LexicalComposer } from '@lexical/react/LexicalComposer';
+import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
+import { ContentEditable } from '@lexical/react/LexicalContentEditable';
+import { LexicalErrorBoundary } from '@lexical/react/LexicalErrorBoundary';
+import { AutoFocusPlugin } from '@lexical/react/LexicalAutoFocusPlugin';
+import { Lexica } from '@lexical/react/LexicalComposer';
+import ToolbarPlugin from '@/components/ui/Toolbar_plagin'; 
 
-import { useRef } from 'react';
-import { Editor } from '@tinymce/tinymce-react';
+const theme = {
+  text: {
+    bold: 'font-bold',
+    underline: 'underline',
+    strikethrough: 'line-through',
+    underlineStrikethrough: 'overline',
+    italic: 'italic',
+    code: 'bg-gray-300 text-black font-bold text-xl',
+  },
+};
 
+const initialConfig = {
+  namespace: 'MyEditor',
+  theme: theme, // Pass the theme directly
+  nodes: [], // Pass the references to the nodes here
+  onError: (error) => {
+    console.error(error); // Properly handle errors
+  },
+};
 
-export default function Tditor() {
-  const editorRef = useRef(null);
-  const log = () => {
-    if (editorRef.current) {
-      console.log(editorRef.current.getContent());
-    }
-  };
+function Tiptap() {
   return (
-    <>
-      <Editor
-        apiKey='7i6hkkszamf97bvcdsd1r8b2f4hnfbfy113b17sulfit8hyc'
-        onInit={(_evt, editor) => editorRef.current = editor}
-        initialValue="<p>This is the initial content of the editor.</p>"
-        init={{
-          height: 500,
-          menubar: false,
-          plugins: [
-            'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-            'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-            'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-          ],
-          toolbar: 'undo redo | blocks | ' +
-            'bold italic forecolor | alignleft aligncenter ' +
-            'alignright alignjustify | bullist numlist outdent indent | ' +
-            'removeformat | help',
-          content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }'
-        }}
-      />
-      <button onClick={log}>Log editor content</button>
-    </>
+    <div>
+      <LexicalComposer initialConfig={initialConfig}>
+        <ToolbarPlugin />
+        <RichTextPlugin
+          contentEditable={
+            <ContentEditable className="editor-content-editable h-[200px] w-[1000px] text-2xl overflow-auto border border-gray-200" />
+          }
+          placeholder={<div className="editor-placeholder">Enter some text...</div>}
+          ErrorBoundary={LexicalErrorBoundary}
+        />
+        <AutoFocusPlugin />
+      </LexicalComposer>
+    </div>
   );
 }
+
+export default Tiptap;

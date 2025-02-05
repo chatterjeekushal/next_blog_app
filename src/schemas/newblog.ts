@@ -23,6 +23,9 @@ export const newblogSchema =z.object({
     .max(1000, { message: "Blogcontent must be less than 1000 characters" })
     .trim(),
 
+    blogcatagory: z
+    .string()
+   
     
 
 })
