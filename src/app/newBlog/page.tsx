@@ -232,7 +232,7 @@ export default function Page() {
                           'wordcount',
                         ],
                         toolbar:
-                          'undo redo | blocks | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help | media | image|code ',
+                          'undo redo | blocks | bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | media | image|code ',
                         content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
                       }}
                       onEditorChange={handleEditorChange}
