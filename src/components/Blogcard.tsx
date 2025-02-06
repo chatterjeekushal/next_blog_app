@@ -47,10 +47,12 @@ const Card = (props: { blog: Blog }) => {
 
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center">
-            <img
-              alt="Tania Andrew"
+            <Image
+              alt={props.blog.author}
               src={props.blog.authorImage}
               className="relative inline-block h-8 w-8 rounded-full"
+              width={32} // Specify the width
+              height={32} // Specify the height
             />
             <div className="flex flex-col ml-3 text-sm">
               <span className="text-slate-800 font-semibold">{props.blog.author}</span>

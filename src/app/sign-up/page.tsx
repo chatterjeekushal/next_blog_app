@@ -33,18 +33,16 @@ type FormData = {
 };
 
 function Page() {
-
     const [username, setUsername] = React.useState('')
     const [usernameMessage, setUsernameMessage] = React.useState('')
-    const [ischaking, setIschaking] = React.useState(false)
-    const [isSubmiting, setIsSubmiting] = React.useState(false)
+    const [isChecking, setIsChecking] = React.useState(false)
+    const [isSubmitting, setIsSubmitting] = React.useState(false)
     const { toast } = useToast()
-
     const router = useRouter()
 
     const debounced = useDebounceCallback(setUsername, 300)
 
-    // zod implementation
+    // React Hook Form setup with Zod validation
     const form = useForm<FormData>({
         resolver: z.zodResolver(singupSchema),
         defaultValues: {
@@ -57,13 +55,11 @@ function Page() {
     useEffect(() => {
         const checkUsername = async () => {
             if (username) {
-                setIschaking(true)
+                setIsChecking(true)
                 setUsernameMessage('')
                 try {
-                    const response = await axios.get(`/api/chak-username-unique?username=${username}`)
-                    const errormessage = response.data.message
-                    setUsernameMessage(errormessage)
-                    setIschaking(false)
+                    const response = await axios.get(`/api/check-username-unique?username=${username}`)
+                    setUsernameMessage(response.data.message)
                 } catch (error) {
                     const axiosError = error as AxiosError;
                     if (axiosError.response) {
@@ -73,7 +69,8 @@ function Page() {
                     } else {
                         setUsernameMessage("Network or request error occurred");
                     }
-                    setIschaking(false)
+                } finally {
+                    setIsChecking(false)
                 }
             }
         }
@@ -81,16 +78,15 @@ function Page() {
     }, [username])
 
     const onsubmit = async (data: FormData) => {
-        setIsSubmiting(true)
+        setIsSubmitting(true)
 
         try {
-            const response = await axios.post('/api/sign-up', data)
+            await axios.post('/api/sign-up', data)
             toast({
                 title: 'Success',
                 description: "User created successfully",
             })
-            router.replace(`/verify/${username}`)
-            setIsSubmiting(false)
+            router.replace(`/verify/${data.username}`)
         } catch (error) {
             const axiosError = error as AxiosError;
             if (axiosError.response) {
@@ -98,7 +94,8 @@ function Page() {
                 const serverMessage = serverResponse.error?.[0] || serverResponse.message;
                 toast({ title: 'Error', description: serverMessage || "User not created" })
             }
-            setIsSubmiting(false)
+        } finally {
+            setIsSubmitting(false)
         }
     }
 
@@ -129,7 +126,7 @@ function Page() {
                                         className="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                     />
                                 </FormControl>
-                                {ischaking ? (
+                                {isChecking ? (
                                     <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
                                         <path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 1 1-6.219-8.56"></path>
                                     </svg>
@@ -160,9 +157,6 @@ function Page() {
                                         className="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                     />
                                 </FormControl>
-                                <FormDescription className="text-sm text-gray-500">
-                                    This is your public display name.
-                                </FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -183,9 +177,6 @@ function Page() {
                                         className="mt-2 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                     />
                                 </FormControl>
-                                <FormDescription className="text-sm text-gray-500">
-                                    This is your public display name.
-                                </FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -194,14 +185,10 @@ function Page() {
                     {/* Submit Button */}
                     <Button
                         type="submit"
-                        disabled={isSubmiting}
+                        disabled={isSubmitting}
                         className="w-full mt-4 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     >
-                        {isSubmiting ? (
-                            <>...please wait</>
-                        ) : (
-                            'Sign Up'
-                        )}
+                        {isSubmitting ? '...please wait' : 'Sign Up'}
                     </Button>
                 </form>
             </Form>

@@ -3,6 +3,7 @@
   "rules": {
     "no-unused-vars": "off", // Disable the no-unused-vars rule
     "react-hooks/exhaustive-deps": "off",
-    "rule-name": "off"
+    "rule-name": "off",
+    "@typescript-eslint/no-unused-vars": "off"
   }
 }

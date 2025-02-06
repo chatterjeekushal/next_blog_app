@@ -6,7 +6,6 @@ import axios from 'axios';
 import { useToast } from '@/hooks/use-toast';
 import sanitizeHtml from 'sanitize-html';
 import { Button } from "@/components/ui/button";
-import { useRouter } from 'next/navigation';
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -15,8 +14,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { useForm } from "react-hook-form";
 import Image from 'next/image'; // Added import for Image
 
+// If blogImage can be either a URL string or a Next.js StaticImageData, use the following type.
+// Otherwise, if it's always a string, you can simply use `string`.
+// import type { StaticImageData } from 'next/image';
+
 interface BlogPost {
-  blogImage: any;
+  blogImage: string; // or string | StaticImageData if necessary
   slug: string;
   blogtitle: string;
   blogdescription: string;
@@ -31,7 +34,7 @@ interface BlogPost {
   authorImage: string;
 }
 
-interface comment {
+interface Comment {
   comment: string;
   blogcommentowner: string;
   blogtitle: string;
@@ -51,10 +54,9 @@ const formSchema = z.object({
 export default function Page({ params }: PageProps) {
   const [isShaking, setIsShaking] = useState(false);
   const [blog, setBlog] = useState<BlogPost | null>(null);
-  const [comments, setComments] = useState<comment[]>([]);
+  const [comments, setComments] = useState<Comment[]>([]);
   const { toast } = useToast();
-  const router = useRouter();
-
+  
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -63,7 +65,7 @@ export default function Page({ params }: PageProps) {
   });
 
   const slug = params.slug;
-  const newSlug = slug.replace(/-/g, " "); // Changed let to const
+  const newSlug = slug.replace(/-/g, " ");
 
   useEffect(() => {
     setIsShaking(true);
@@ -94,7 +96,7 @@ export default function Page({ params }: PageProps) {
     };
 
     fetchBlog();
-  }, [slug, newSlug]);
+  }, [slug, newSlug, toast]);
 
   const customSanitizeOptions = {
     allowedTags: ['h1', 'h2', 'h3', 'h4', 'p', 'a', 'ul', 'ol', 'li', 'strong', 'em', 'u', 'img', 'br', 'blockquote', 'code'],

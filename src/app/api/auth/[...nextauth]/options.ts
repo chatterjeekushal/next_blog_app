@@ -6,6 +6,11 @@ import bcrypt from "bcryptjs";
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/user"; 
 
+interface Credentials {
+  username: string;
+  password: string;
+}
+
 export const authOptions: NextAuthOptions = {
   providers: [
     // GitHub provider
@@ -22,7 +27,7 @@ export const authOptions: NextAuthOptions = {
         username: { label: "Username", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials: any): Promise<any> {
+      async authorize(credentials: Credentials | undefined): Promise<any> {
         if (!credentials) {
           throw new Error("No credentials provided");
         }
@@ -32,7 +37,7 @@ export const authOptions: NextAuthOptions = {
           const user = await UserModel.findOne({
             $or: [
               { username: credentials.username },
-              { email: credentials.username }, // Assuming you might want to allow email login as well
+              { email: credentials.username }, // Allows email login as well
             ],
           });
 

@@ -81,14 +81,6 @@ const data = {
   ],
 }
 
-interface NavUserProps {
-  User: {
-    name: string
-    email: string
-    avatar: string
-  }
-}
-
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar variant="inset" {...props}>

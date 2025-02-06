@@ -3,12 +3,11 @@
 
 import React from 'react'
 import { useRouter, useParams } from 'next/navigation'
-import * as z from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"  // Import zodResolver
 import { useToast } from "@/hooks/use-toast"
 import { verifySchema } from '@/schemas/verifySchema'
-import axios, { AxiosError } from 'axios'
-import { ApiResponce } from '@/types/ApiResponce'
+import axios from 'axios'
 
 import {
     Form,
@@ -36,7 +35,7 @@ function Page() {
     const { toast } = useToast()
 
     const form = useForm({
-        resolver: z.zodResolver(verifySchema),
+        resolver: zodResolver(verifySchema),  // ✅ Correct way to use Zod schema
         defaultValues: {
             code: "",
         },
@@ -50,19 +49,19 @@ function Page() {
             router.replace(`/sign-in`)
 
             toast({
-                title: 'success',
+                title: 'Success',
                 description: response.data.message,
             })
-        } catch (error: AxiosError<ApiResponce>) {
-            console.log("error in verify code", error)
+        } catch (error: any) {
+            console.log("Error in verify code", error)
 
-            const errormessage = error.response?.data.message || 'something went wrong'
+            const errorMessage = error.response?.data?.message || 'Something went wrong'
 
-            console.log("errormessage", errormessage)
+            console.log("Error message", errorMessage)
 
             toast({
-                title: 'error',
-                description: errormessage,
+                title: 'Error',
+                description: errorMessage,
                 variant: 'destructive',
             })
         }
@@ -86,12 +85,13 @@ function Page() {
                                     <FormControl>
                                         <InputOTP maxLength={6} {...field}>
                                             <InputOTPGroup className="flex justify-between space-x-2">
-                                                <InputOTPSlot index={0} className="w-12 h-12 border border-gray-300 rounded text-center text-xl font-semibold" />
-                                                <InputOTPSlot index={1} className="w-12 h-12 border border-gray-300 rounded text-center text-xl font-semibold" />
-                                                <InputOTPSlot index={2} className="w-12 h-12 border border-gray-300 rounded text-center text-xl font-semibold" />
-                                                <InputOTPSlot index={3} className="w-12 h-12 border border-gray-300 rounded text-center text-xl font-semibold" />
-                                                <InputOTPSlot index={4} className="w-12 h-12 border border-gray-300 rounded text-center text-xl font-semibold" />
-                                                <InputOTPSlot index={5} className="w-12 h-12 border border-gray-300 rounded text-center text-xl font-semibold" />
+                                                {[...Array(6)].map((_, index) => (
+                                                    <InputOTPSlot 
+                                                        key={index} 
+                                                        index={index} 
+                                                        className="w-12 h-12 border border-gray-300 rounded text-center text-xl font-semibold" 
+                                                    />
+                                                ))}
                                             </InputOTPGroup>
                                         </InputOTP>
                                     </FormControl>
