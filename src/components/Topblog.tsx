@@ -1,3 +1,4 @@
+
 'use client'
 
 import React from 'react';
@@ -44,48 +45,45 @@ const Card = () => {
 
       <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-fit 2xl:gap-40 2xl:mr-24'>
         {cardData.map((card) => (
-
-<Link href="/dashboard">
-
-          <div key={card.id} className="my-6 2xl:w-auto">
-            <a 
-              href="#" 
-              className="relative flex flex-col bg-white shadow-sm border border-slate-200 rounded-lg w-full md:w-96 lg:w-96 px-2 transition-transform transform hover:scale-105 hover:border-purple-600 duration-300 dark:bg-gray-800 dark:border-gray-700"
-            >
-              <div className="relative h-56 m-2.5 overflow-hidden text-white rounded-md">
-                <Image 
-                  src={card.imageUrl} 
-                  alt={card.title} 
-                  layout="fill" 
-                  objectFit="cover" 
-                  className="rounded-md" 
-                />
-              </div>
-              <div className="p-4">
-                <div className="mb-4 rounded-full bg-cyan-600 py-0.5 px-2.5 border border-transparent text-xs text-white transition-all shadow-sm w-20 text-center">
-                  POPULAR
-                </div>
-                <h6 className="mb-2 text-slate-800 dark:text-gray-200 text-xl font-semibold">{card.title}</h6>
-                <p className="text-slate-600 dark:text-gray-400 leading-normal font-light">{card.description}</p>
-              </div>
-              <div className="flex items-center justify-between p-4">
-                <div className="flex items-center">
-                  <Image
-                    alt={card.author}
-                    src={card.authorImage}
-                    width={32}
-                    height={32}
-                    className="relative inline-block rounded-full"
+          <Link key={card.id} href="/dashboard">
+            <div className="my-6 2xl:w-auto">
+              <a 
+                href="#" 
+                className="relative flex flex-col bg-white shadow-sm border border-slate-200 rounded-lg w-full md:w-96 lg:w-96 px-2 transition-transform transform hover:scale-105 hover:border-purple-600 duration-300 dark:bg-gray-800 dark:border-gray-700"
+              >
+                <div className="relative h-56 m-2.5 overflow-hidden text-white rounded-md">
+                  <Image 
+                    src={card.imageUrl} 
+                    alt={card.title} 
+                    layout="fill" 
+                    objectFit="cover" 
+                    className="rounded-md" 
                   />
-                  <div className="flex flex-col ml-3 text-sm">
-                    <span className="text-slate-800 dark:text-gray-200 font-semibold">{card.author}</span>
-                    <span className="text-slate-600 dark:text-gray-400">{card.date}</span>
+                </div>
+                <div className="p-4">
+                  <div className="mb-4 rounded-full bg-cyan-600 py-0.5 px-2.5 border border-transparent text-xs text-white transition-all shadow-sm w-20 text-center">
+                    POPULAR
+                  </div>
+                  <h6 className="mb-2 text-slate-800 dark:text-gray-200 text-xl font-semibold">{card.title}</h6>
+                  <p className="text-slate-600 dark:text-gray-400 leading-normal font-light">{card.description}</p>
+                </div>
+                <div className="flex items-center justify-between p-4">
+                  <div className="flex items-center">
+                    <Image
+                      alt={card.author}
+                      src={card.authorImage}
+                      width={32}
+                      height={32}
+                      className="relative inline-block rounded-full"
+                    />
+                    <div className="flex flex-col ml-3 text-sm">
+                      <span className="text-slate-800 dark:text-gray-200 font-semibold">{card.author}</span>
+                      <span className="text-slate-600 dark:text-gray-400">{card.date}</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </a>
-          </div>
-
+              </a>
+            </div>
           </Link>      
         ))}
       </div>

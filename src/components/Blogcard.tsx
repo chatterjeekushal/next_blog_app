@@ -1,25 +1,38 @@
 
 import React from "react";
 import dayjs from 'dayjs';
-import realtiveTime from "dayjs/plugin/relativeTime"
+import relativeTime from "dayjs/plugin/relativeTime";
+import Image from "next/image"; // Import next/image
 
-dayjs.extend(realtiveTime)
-const Card = (props: any) => {
+dayjs.extend(relativeTime);
 
+interface Blog {
+  blogtitle: string;
+  blogImage: string;
+  blogcategory: string;
+  blogdescription: string;
+  author: string;
+  authorImage: string;
+  createdAt: string;
+  slug: string;
+}
 
-
-    console.log(props.blog.blogtitle);
+const Card = (props: { blog: Blog }) => {
+  console.log(props.blog.blogtitle);
 
   return (
     <a href={`/blog/${props.blog.slug}`}>
-      <div className="relative flex flex-col  bg-slate-100 border border-slate-200 shadow-sm  rounded-lg w-full md:w-96 lg:w-96 px-2 transition-transform transform hover:scale-105 hover:border-purple-600 duration-300 dark:bg-gray-800 dark:border-gray-700">
+      <div className="relative flex flex-col bg-slate-100 border border-slate-200 shadow-sm rounded-lg w-full md:w-96 lg:w-96 px-2 transition-transform transform hover:scale-105 hover:border-purple-600 duration-300 dark:bg-gray-800 dark:border-gray-700">
+        
         <div className="relative h-56 m-2.5 overflow-hidden text-white rounded-md">
-          <img
+          <Image
             src={props.blog.blogImage}
             alt="card-image"
-            className="w-full h-full object-cover"
+            layout="fill"
+            objectFit="cover"
           />
         </div>
+        
         <div className="p-4">
           <div className="mb-4 rounded-full bg-cyan-600 py-0.5 px-2.5 border border-transparent text-xs text-white transition-all shadow-sm w-20 text-center">
             {props.blog.blogcategory}
@@ -28,7 +41,7 @@ const Card = (props: any) => {
             {props.blog.blogtitle}
           </h6>
           <p className="text-slate-600 leading-normal font-light">
-           {props.blog.blogdescription}
+            {props.blog.blogdescription}
           </p>
         </div>
 

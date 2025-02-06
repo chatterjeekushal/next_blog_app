@@ -61,6 +61,8 @@ const Dashbord = () => {
           <div className='flex gap-4 mt-5'>
             <Button>Edit Profile</Button> 
             <Button>Profile Details</Button>
+            {/* Sign out button */}
+            <Button onClick={() => signOut()}>Sign Out</Button>
           </div>
         </Alert>
       </div>

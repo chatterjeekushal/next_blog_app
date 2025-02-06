@@ -2,6 +2,7 @@
   "extends": ["next/core-web-vitals", "next/typescript"],
   "rules": {
     "no-unused-vars": "off", // Disable the no-unused-vars rule
-    "react-hooks/exhaustive-deps": "off"
+    "react-hooks/exhaustive-deps": "off",
+    "rule-name": "off"
   }
 }

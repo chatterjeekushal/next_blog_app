@@ -11,7 +11,7 @@ const TabContent = () => {
   };
 
   return (
-    <div className="w-full  border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+    <div className="w-full border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       <div className="sm:hidden">
         <label htmlFor="tabs" className="sr-only">Select tab</label>
         <select
@@ -121,7 +121,7 @@ const TabContent = () => {
             <div className="space-y-4">
               <details className="group">
                 <summary className="py-2 text-sm font-medium text-gray-900 dark:text-white">
-                  What is a "metaverse" and why does it matter?
+                  What is a &quot;metaverse&quot; and why does it matter?
                 </summary>
                 <p className="mt-2 text-gray-500 dark:text-gray-400">The metaverse is a collective virtual shared space...</p>
               </details>
@@ -134,8 +134,6 @@ const TabContent = () => {
             </div>
           </div>
         )}
-
-
       </div>
     </div>
   );

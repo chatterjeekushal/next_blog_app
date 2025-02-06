@@ -1,12 +1,11 @@
 
+
 'use client'
 
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { useToast } from "@/hooks/use-toast";
-import { useRouter } from 'next/navigation';
 import Blogcard from '@/components/Blogcard';
-
 interface Blog {
     blogid: string | number;
     blogtitle: string;
@@ -23,15 +22,12 @@ interface Blog {
 }
 
 export default function Blog() {
-    const [isShaking, setIsShaking] = useState(false);
     const [allBlogs, setBlogs] = useState<Blog[]>([]);
     const [filteredBlogs, setFilteredBlogs] = useState<Blog[]>([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [category, setCategory] = useState<string>('');
-   
-
+    
     const { toast } = useToast();
-    const router = useRouter();
 
     // Handler for the search input change
     const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,12 +38,8 @@ export default function Blog() {
         setCategory(e.target.value);
     };
 
- 
-
     // Fetch blogs and apply filters when the component mounts or when any filter changes
     useEffect(() => {
-        setIsShaking(true);
-
         const fetchBlogs = async () => {
             try {
                 const response = await axios.get(`/api/all-blogs`);
@@ -72,16 +64,11 @@ export default function Blog() {
                     description: 'Failed to fetch blogs.',
                     variant: 'destructive',
                 });
-            } finally {
-                setIsShaking(false);
             }
         };
 
         fetchBlogs();
     }, []); // This only runs once on mount
-
-
-
 
     // Function to filter blogs based on current filters
     const filterBlogs = () => {
@@ -90,21 +77,16 @@ export default function Blog() {
         // Apply category filter
         if (category) {
             filtered = filtered.filter(blog => blog.blogcategory == category);
-  
         }
 
         // Apply search query filter
         if (searchQuery) {
             filtered = filtered.filter(blog =>
                 blog.blogtitle.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                blog.blogdescription.toLowerCase().includes(searchQuery.toLowerCase()) 
-                
+                blog.blogdescription.toLowerCase().includes(searchQuery.toLowerCase())
             );
         }
 
-      
-
-       
         setFilteredBlogs(filtered);
 
         console.log("filteredBlogs", filteredBlogs);
@@ -113,7 +95,7 @@ export default function Blog() {
     // Trigger filter on changes
     useEffect(() => {
         filterBlogs();
-    }, [allBlogs, category,  searchQuery]); // Runs on changes to any of the filters
+    }, [allBlogs, category, searchQuery]); // Runs on changes to any of the filters
 
     return (
         <>

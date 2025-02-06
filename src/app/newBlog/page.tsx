@@ -3,7 +3,6 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import * as z from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useToast } from '@/hooks/use-toast';
@@ -11,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { newblogSchema } from '@/schemas/newblog';
 import axios, { AxiosError } from 'axios';
 import { ApiResponce } from '@/types/ApiResponce';
-import { Editor } from '@tinymce/tinymce-react';
+import { Editor as TinyMCEEditor } from '@tinymce/tinymce-react';
 import {
   Form,
   FormControl,
@@ -31,16 +30,23 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 
+type BlogFormData = {
+  blogtitle: string;
+  blogdescription: string;
+  blogcontent: string;
+  blogcatagory: string;
+};
+
 export default function Page() {
   const { toast } = useToast();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [blogImage, setBlogImage] = useState<File | null>(null);
-  const editorRef = useRef<any>(null);
+  const editorRef = useRef<TinyMCEEditor | null>(null);
   const [editorContent, setEditorContent] = useState<string>('');
 
   // Zod form validation schema
-  const form = useForm({
+  const form = useForm<BlogFormData>({
     resolver: zodResolver(newblogSchema),
     defaultValues: {
       blogtitle: '',
@@ -56,7 +62,7 @@ export default function Page() {
   };
 
   // Handle form submission
-  const handleSubmit = async (data: any) => {
+  const handleSubmit = async (data: BlogFormData) => {
     setIsSubmitting(true);
 
     const formData = new FormData();
@@ -70,7 +76,7 @@ export default function Page() {
     }
 
     try {
-      const response = await axios.post('/api/new-blog', formData, {
+      await axios.post('/api/new-blog', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

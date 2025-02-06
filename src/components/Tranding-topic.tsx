@@ -9,7 +9,7 @@ const TrendingTopics = () => {
           Trending Topics
         </h2>
         <p className="text-gray-600 dark:text-gray-300 animate__animated animate__fadeIn">
-          Explore what's hot in our community
+          Explore what&apos;s hot in our community
         </p>
       </div>
 

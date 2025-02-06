@@ -1,3 +1,4 @@
+
 "use client"
 
 import {
@@ -32,9 +33,8 @@ import {
 
 import { useSession, signOut } from 'next-auth/react'
 import { User } from 'next-auth'
-export function NavUser({
 
-}) {
+export function NavUser() {
   const { isMobile } = useSidebar()
 
   const { data: session } = useSession()
@@ -44,8 +44,8 @@ export function NavUser({
   console.log("user", user);
   console.log("session", session);
 
-   // Determine the image source based on session.user.image or fallback to userImage
-   const imageSrc = session?.user?.image || session?.user?.userImage || '/default-avatar.png';
+  // Determine the image source based on session.user.image or fallback to userImage
+  const imageSrc = session?.user?.image || session?.user?.userImage || '/default-avatar.png';
 
   return (
     <SidebarMenu>
@@ -108,7 +108,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => signOut()}>
               <LogOut />
               Log out
             </DropdownMenuItem>

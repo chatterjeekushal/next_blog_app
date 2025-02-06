@@ -1,16 +1,14 @@
+
 "use client"
 
 import * as React from "react"
 import {
-  BookOpen,
-  Bot,
   Command,
   Frame,
   LifeBuoy,
   Map,
   PieChart,
   Send,
-  Settings2,
   SquareTerminal,
 } from "lucide-react"
 
@@ -45,17 +43,12 @@ const data = {
           title: "New Blog",
           url: "/newBlog",
         },
-       
         {
           title: "All Blogs",
           url: "/user-all-blogs",
         },
-       
       ],
     },
-
-  
-    
   ],
   navSecondary: [
     {
@@ -88,6 +81,14 @@ const data = {
   ],
 }
 
+interface NavUserProps {
+  User: {
+    name: string
+    email: string
+    avatar: string
+  }
+}
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar variant="inset" {...props}>
@@ -109,13 +110,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        
         <NavMain items={data.navMain} />
         <NavProjects projects={data.projects} />
         <NavSecondary items={data.navSecondary} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
-      <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
     </Sidebar>
   )

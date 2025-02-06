@@ -19,7 +19,6 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import Dashbord from "@/components/Dashbord"
 
 function page() {
@@ -49,15 +48,7 @@ function page() {
             </div>
           </header>
           <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
-
-
-
-
             <Dashbord />
-
-
-
-
           </div>
         </SidebarInset>
       </SidebarProvider>

@@ -1,13 +1,20 @@
+
 'use client'
 
 import React from 'react'
-import * as z from "@hookform/resolvers/zod"
+import * as z from "zod"
 import { useForm } from "react-hook-form"
 import Link from 'next/link'
 
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from 'next/navigation'
 import { singInSchema } from '@/schemas/singInSchema'
+
+// Import zodResolver correctly from @hookform/resolvers/zod
+import { zodResolver } from '@hookform/resolvers/zod'
+
+// Correct way to infer the form data type from your Zod schema
+type SignInFormData = z.infer<typeof singInSchema>
 
 import {
     Form,
@@ -29,15 +36,15 @@ function Page() {
     const router = useRouter()
 
     // zod validation
-    const form = useForm({
-        resolver: z.zodResolver(singInSchema),
+    const form = useForm<SignInFormData>({
+        resolver: zodResolver(singInSchema),
         defaultValues: {
             username: "",
             password: ""
         }
     })
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: SignInFormData) => {
         setIsSubmitting(true)
         const result = await signIn('credentials', { username: data.username, password: data.password, redirect: false })
 

@@ -2,17 +2,12 @@
 import dbConnect from "@/lib/dbConnect";
 import NewBlogModel from "@/model/newBlog";
 
-export async function GET(req: Request) {
+export async function GET() {
     await dbConnect();
-
-
-  
 
     try {
         // Fetch all blogs sorted by creation date
         const allblogs = await NewBlogModel.find({}).sort({ createdAt: -1 });
-
-     
 
         return Response.json({ message: "Blogs fetched successfully", success: true, blogs: allblogs }, { status: 200 });
     } catch (error) {
