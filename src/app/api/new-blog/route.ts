@@ -1,5 +1,6 @@
 
 
+
 import dbConnect from "@/lib/dbConnect";
 import NewBlogModel from "@/model/newBlog";
 import { getServerSession } from "next-auth/next";
@@ -118,7 +119,6 @@ export async function POST(req: Request) {
                 { status: 500 }
             );
         }else {
-           
             const newBlog = new NewBlogModel({
                 blogid: user?._id,
                 blogtitle: blogtitle,
@@ -127,11 +127,11 @@ export async function POST(req: Request) {
                 blogcategory: blogcatagory,
                 slug: slug,
                 author: user?.username,
-                authorImage: session?.user?.image || "default_image", 
-                blogImage: result.url, 
-                date: formattedDate, // Use formattedDate instead of currentDate
+                authorImage: session?.user?.image || "default_image", // fallback for authorImage
+                blogImage: result.url, // Assign the image URL here
+                date: currentDate, // Assign the formatted date here
             });
-            
+
          
              // Save the new blog to the database
              await newBlog.save();
