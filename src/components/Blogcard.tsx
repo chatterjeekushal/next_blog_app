@@ -1,24 +1,21 @@
 
-
 import React from "react";
-import dayjs from 'dayjs';
-import realtiveTime from "dayjs/plugin/relativeTime"
+import Image from "next/image";
+import dayjs from "dayjs";
+import relativeTime from "dayjs/plugin/relativeTime";
 
-dayjs.extend(realtiveTime)
+dayjs.extend(relativeTime);
+
 const Card = (props: any) => {
-
-
-
-    console.log(props.blog.blogtitle);
-
   return (
     <a href={`/blog/${props.blog.slug}`}>
-      <div className="relative flex flex-col  bg-slate-100 border border-slate-200 shadow-sm  rounded-lg w-full md:w-96 lg:w-96 px-2 transition-transform transform hover:scale-105 hover:border-purple-600 duration-300 dark:bg-gray-800 dark:border-gray-700">
+      <div className="relative flex flex-col bg-slate-100 border border-slate-200 shadow-sm rounded-lg w-full md:w-96 lg:w-96 px-2 transition-transform transform hover:scale-105 hover:border-purple-600 duration-300 dark:bg-gray-800 dark:border-gray-700">
         <div className="relative h-56 m-2.5 overflow-hidden text-white rounded-md">
-          <img
+          <Image
             src={props.blog.blogImage}
             alt="card-image"
-            className="w-full h-full object-cover"
+            layout="fill"
+            objectFit="cover"
           />
         </div>
         <div className="p-4">
@@ -29,15 +26,16 @@ const Card = (props: any) => {
             {props.blog.blogtitle}
           </h6>
           <p className="text-slate-600 leading-normal font-light">
-           {props.blog.blogdescription}
+            {props.blog.blogdescription}
           </p>
         </div>
-
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center">
-            <img
+            <Image
               alt="Tania Andrew"
               src={props.blog.authorImage}
+              width={32}
+              height={32}
               className="relative inline-block h-8 w-8 rounded-full"
             />
             <div className="flex flex-col ml-3 text-sm">
