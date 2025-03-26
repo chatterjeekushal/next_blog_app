@@ -4,10 +4,10 @@
 import React from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"  // Import zodResolver
+import { zodResolver } from "@hookform/resolvers/zod"
 import { useToast } from "@/hooks/use-toast"
 import { verifySchema } from '@/schemas/verifySchema'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 
 import {
     Form,
@@ -34,8 +34,8 @@ function Page() {
     const router = useRouter()
     const { toast } = useToast()
 
-    const form = useForm({
-        resolver: zodResolver(verifySchema),  // ✅ Correct way to use Zod schema
+    const form = useForm<{ code: string }>({
+        resolver: zodResolver(verifySchema),
         defaultValues: {
             code: "",
         },
@@ -52,10 +52,11 @@ function Page() {
                 title: 'Success',
                 description: response.data.message,
             })
-        } catch (error: any) {
+        } catch (error) {
             console.log("Error in verify code", error)
 
-            const errorMessage = error.response?.data?.message || 'Something went wrong'
+            const axiosError = error as AxiosError<{ message?: string }>
+            const errorMessage = axiosError.response?.data?.message || 'Something went wrong'
 
             console.log("Error message", errorMessage)
 

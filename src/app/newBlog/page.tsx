@@ -1,6 +1,5 @@
 
 
-
 'use client';
 
 import React, { useState, useRef } from 'react';
@@ -32,16 +31,18 @@ import {
   SelectItem,
 } from '@/components/ui/select';
 
+// Define type for form data based on schema
+type BlogFormData = z.infer<typeof newblogSchema>;
+
 export default function Page() {
   const { toast } = useToast();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [blogImage, setBlogImage] = useState<File | null>(null);
-  const editorRef = useRef<any>(null);
+  const editorRef = useRef<Editor | null>(null);
   const [editorContent, setEditorContent] = useState<string>('');
 
-  // Zod form validation schema
-  const form = useForm({
+  const form = useForm<BlogFormData>({
     resolver: zodResolver(newblogSchema),
     defaultValues: {
       blogtitle: '',
@@ -51,13 +52,12 @@ export default function Page() {
     },
   });
 
-  // Handle editor content changes
   const handleEditorChange = (content: string) => {
     setEditorContent(content);
   };
 
-  // Handle form submission
-  const handleSubmit = async (data: any) => {
+  // Define proper types for `data`
+  const handleSubmit = async (data: BlogFormData) => {
     setIsSubmitting(true);
 
     const formData = new FormData();
@@ -82,14 +82,13 @@ export default function Page() {
         description: 'Your blog has been successfully created.',
       });
 
-      router.push('/blog'); // Redirect after successful blog creation
+      router.push('/blog');
     } catch (error) {
       console.error('Error creating blog:', error);
-      const axiosError = error as AxiosError;
+      const axiosError = error as AxiosError<ApiResponce>;
 
       if (axiosError.response) {
-        const serverResponse = axiosError.response.data as ApiResponce;
-        const serverMessage = serverResponse.error?.[0] || serverResponse.message;
+        const serverMessage = axiosError.response.data.error?.[0] || axiosError.response.data.message;
 
         toast({
           title: 'Error',
@@ -108,57 +107,42 @@ export default function Page() {
       <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg p-6">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
-            {/* Blog Title Field */}
             <FormField
               control={form.control}
               name="blogtitle"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-700">Blog Title</FormLabel>
+                  <FormLabel>Blog Title</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter blog title"
-                      {...field}
-                      className="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    />
+                    <Input placeholder="Enter blog title" {...field} />
                   </FormControl>
-                  <FormDescription className="text-sm text-gray-500">
-                    Give your blog a title.
-                  </FormDescription>
+                  <FormDescription>Give your blog a title.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            {/* Blog Description Field */}
             <FormField
               control={form.control}
               name="blogdescription"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-700">Blog Description</FormLabel>
+                  <FormLabel>Blog Description</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter blog description"
-                      {...field}
-                      className="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    />
+                    <Input placeholder="Enter blog description" {...field} />
                   </FormControl>
-                  <FormDescription className="text-sm text-gray-500">
-                    Describe the content of your blog.
-                  </FormDescription>
+                  <FormDescription>Describe the content of your blog.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            {/* Blog Category Field */}
             <FormField
               control={form.control}
               name="blogcatagory"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-700">Blog Category</FormLabel>
+                  <FormLabel>Blog Category</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger className="w-full">
@@ -179,9 +163,8 @@ export default function Page() {
               )}
             />
 
-            {/* Blog Image Field */}
             <FormItem>
-              <FormLabel className="text-sm font-medium text-gray-700">Blog Image</FormLabel>
+              <FormLabel>Blog Image</FormLabel>
               <FormControl>
                 <Input
                   type="file"
@@ -191,19 +174,17 @@ export default function Page() {
                       setBlogImage(file);
                     }
                   }}
-                  className="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />
               </FormControl>
               <FormMessage />
             </FormItem>
 
-            {/* Blog Content Field */}
             <FormField
               control={form.control}
               name="blogcontent"
-              render={({ field }) => (
+              render={() => (
                 <FormItem>
-                  <FormLabel className="text-sm font-medium text-gray-700">Blog Content</FormLabel>
+                  <FormLabel>Blog Content</FormLabel>
                   <FormControl>
                     <Editor
                       apiKey="7i6hkkszamf97bvcdsd1r8b2f4hnfbfy113b17sulfit8hyc"
@@ -239,20 +220,13 @@ export default function Page() {
                       onEditorChange={handleEditorChange}
                     />
                   </FormControl>
-                  <FormDescription className="text-sm text-gray-500">
-                    Enter the full content for your blog.
-                  </FormDescription>
+                  <FormDescription>Enter the full content for your blog.</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            {/* Submit Button */}
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-300 ease-in-out"
-            >
+            <Button type="submit" disabled={isSubmitting} className="w-full bg-indigo-600 text-white">
               {isSubmitting ? 'Submitting...' : 'Create Blog'}
             </Button>
           </form>
